@@ -1,0 +1,30 @@
+/* 
+ * PLUGINS
+ */
+
+@import 'plugins/normalize';
+@import 'plugins/animate';
+@import 'plugins/fancybox';
+@import 'plugins/swiper-bundle.min';
+@import 'plugins/floating-totop-button-tiny';
+@import 'plugins/perfect-scrollbar';
+@import 'plugins/hamburgers/hamburgers';
+
+/* 
+ * THEMES
+ */
+
+/* helpers */
+@import 'helpers/variables';
+@import 'helpers/functions';
+@import 'helpers/mixins';
+@import 'helpers/ultilities';
+@import 'helpers/animate_custom';
+
+/* templates */
+@import 'layout/base';
+@import 'layout/header';
+@import 'layout/footer';
+
+/* pages */
+@import 'pages/homepage';

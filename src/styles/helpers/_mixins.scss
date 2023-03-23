@@ -1,0 +1,25 @@
+@use 'sass:meta';
+
+@mixin background($args...) {
+    @each $name, $value in meta.keywords($args) {
+        @if $name == 'color' {
+            background-color: $value;
+        }
+
+        @if $name == 'image' {
+            background-image: url('#{$image_url}/#{$value}');
+        }
+
+        @if $name == 'position' {
+            background-position: $value;
+        }
+
+        @if $name == 'repeat' {
+            background-repeat: $value;
+        }
+
+        @if $name == 'size' {
+            background-size: $value;
+        }
+    }
+}

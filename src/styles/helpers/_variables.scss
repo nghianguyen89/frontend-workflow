@@ -1,0 +1,52 @@
+/*!
+ * BREAKPOINT
+!*/
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px) !default;
+
+
+/*!
+ * WIDTH
+!*/
+$container-default: 1280px;
+
+
+/*!
+ * FONTS
+!*/
+$font-family-base: "メイリオ",
+    "Meiryo",
+    "游ゴシック Medium",
+    YuGothic,
+    sans-serif;
+$font-weight-base: 400;
+$font-style-base: normal;
+$font-size-base: 15px;
+$font-size-smp-base: 100%;
+
+$h1-font-size: $font-size-base * 2.5 !default;
+$h2-font-size: $font-size-base * 2 !default;
+$h3-font-size: $font-size-base * 1.75 !default;
+$h4-font-size: $font-size-base * 1.5 !default;
+$h5-font-size: $font-size-base * 1.25 !default;
+$h6-font-size: $font-size-base !default;
+
+
+/*!
+ * LINE-HEIGHT
+!*/
+$line-height-base: 1.5 !default;
+$line-height-sm: 1.25 !default;
+$line-height-lg: 2 !default;
+
+
+/*!
+ * COLORS
+!*/
+$text-color-base: #333;
+

@@ -1,0 +1,173 @@
+@use 'sass:map';
+
+body {
+    color: $text-color-base;
+    font-family: $font-family-base;
+    font-weight: $font-weight-base;
+    font-style: $font-style-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: inherit;
+    line-height: 120%;
+}
+
+h1 {
+    font-size: $h1-font-size;
+}
+
+h2 {
+    font-size: $h2-font-size;
+}
+
+h3 {
+    font-size: $h3-font-size;
+}
+
+h4 {
+    font-size: $h4-font-size;
+}
+
+h5 {
+    font-size: $h5-font-size;
+}
+
+h6 {
+    font-size: $h6-font-size;
+}
+
+/*! CSS : cunit-square-css-reset !*/
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*,
+:after,
+:before {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+nav,
+ul {
+    list-style: none;
+}
+
+img {
+    border: 0;
+    display: block;
+    height: auto;
+    margin: 0 auto;
+    width: auto;
+    max-width: 100%;
+    object-fit: cover;
+    // vertical-align: middle;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    outline: 0;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+input,
+select,
+textarea {
+    padding: 6px 0;
+    width: auto;
+    text-indent: 1em;
+    position: relative;
+    border: 1px solid #b3b3b3;
+    border-radius: 0;
+    background-color: #fff;
+}
+
+area {
+    outline: 0;
+}
+
+textarea {
+    resize: none;
+}
+
+input,
+textarea {
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+input[type='submit']:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    max-width: $container-default;
+    margin: 0 auto;
+}
+
+table,
+td,
+th {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.pc {
+    display: inline-block;
+}
+
+.smp {
+    display: none;
+}
+
+.hide {
+    display: none;
+}
+
+.logo_hover:hover img {
+    opacity: 1;
+    cursor: default;
+}
+
+/*! smooth effect !*/
+a,
+button,
+input {
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+@media only screen and (max-width: map.get($grid-breakpoints, 'md')) {
+    body {
+        font-size: $font-size-smp-base;
+        line-height: $line-height-sm;
+    }
+
+    .pc {
+        display: none;
+    }
+
+    .smp {
+        display: inline-block;
+    }
+}
