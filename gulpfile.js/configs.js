@@ -87,6 +87,14 @@ module.exports = {
             src_styles + '**/*.scss',
             src_styles + '!bootstrap/**'
         ],
+        plugins: {
+            src: [
+                src_assets_plugins + 'normalize/normalize.css',
+                src_assets_plugins + 'bootstrap/bootstrap.min.css',
+                src_assets_plugins + '**/*.css'
+            ],
+            dest: src_styles,
+        },
         src: [
             src_styles + '*.scss'
         ],
@@ -98,6 +106,9 @@ module.exports = {
                     return sass(require('sass'));
                 },
             },
+            rename: {
+                'gulp-concat-css': 'concatCss',
+            },
         },
     },
     js: {
@@ -105,15 +116,16 @@ module.exports = {
             src_scripts + '**/*.js'
         ],
         src: [
-            src_scripts_plugins + 'jquery/jquery.min.js',
-            src_scripts_plugins + 'jquery/jquery-migrate.min.js',
+            src_assets_plugins + 'jquery/jquery.min.js',
+            src_assets_plugins + 'jquery/jquery-migrate.min.js',
+            src_assets_plugins + 'bootstrap/bootstrap.bundle.min.js',
+            src_assets_plugins + '**/*.js',
             src_scripts + 'configs.js',
             src_scripts + 'detect/**/*.js',
-            src_scripts_plugins + '*.js',
             src_scripts + 'functions/**/*.js',
             src_scripts + 'template.js',
             src_scripts + 'pages/**/*.js',
-            '!' + src_scripts + '**/_*.js',
+            '!' + src_scripts + '**/_*.js'
         ],
         dest: html_assets + 'js/',
     },

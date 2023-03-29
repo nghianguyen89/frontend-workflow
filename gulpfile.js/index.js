@@ -29,6 +29,6 @@ exports.copy = copy_assets;
 
 exports.watch = wf;
 exports.dev = parallel(wf, bs.browsersync_start);
-exports.build = series(del.clean_all, parallel(build_html, build_css, build_js, build_image, copy_assets));
+exports.build = series(del.clean_all, parallel(build_html, build_css, build_js, build_image));
 
 exports.default = default_task;

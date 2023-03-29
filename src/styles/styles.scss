@@ -1,14 +1,8 @@
 /* 
  * PLUGINS
  */
+@import 'plugins.scss';
 
-@import 'plugins/normalize';
-@import 'plugins/animate';
-@import 'plugins/fancybox';
-@import 'plugins/swiper-bundle.min';
-@import 'plugins/floating-totop-button-tiny';
-@import 'plugins/perfect-scrollbar';
-@import 'plugins/hamburgers/hamburgers';
 
 /* 
  * THEMES
@@ -20,6 +14,9 @@
 @import 'helpers/mixins';
 @import 'helpers/ultilities';
 @import 'helpers/animate_custom';
+
+/* components */
+@import 'components/hamburgers/hamburgers';
 
 /* templates */
 @import 'layout/base';
