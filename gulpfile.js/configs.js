@@ -85,7 +85,8 @@ module.exports = {
     css: {
         watch: [
             src_styles + '**/*.scss',
-            src_styles + '!bootstrap/**'
+            src_styles + '!bootstrap/**',
+            '!' + src_styles + '_plugins.scss'
         ],
         plugins: {
             src: [
