@@ -1,4 +1,6 @@
 @use 'sass:map';
+@use '../helpers/variables';
+@use '../helpers/mixins';
 
 /* 
  * Both PC & SMP 
@@ -12,7 +14,7 @@
 /*
  * only PC 
  */
-@media only screen and (min-width: $media_query_pc_only) {
+@media only screen and (min-width: variables.$media_query_pc_only) {
     .class_name {
         
     }
@@ -23,7 +25,7 @@
 /*
  * only SMP 
  */
-@media only screen and (max-width: $media_query_smp) {
+@media only screen and (max-width: variables.$media_query_smp) {
     .class_name {
         
     }

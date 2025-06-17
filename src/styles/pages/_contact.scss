@@ -1,0 +1,15 @@
+@use 'sass:map';
+@use '../helpers/variables';
+@use '../helpers/mixins';
+
+.contact {
+
+}
+
+
+
+@media only screen and (max-width: variables.$media_query_smp) {
+    .contact {
+        
+    }
+}

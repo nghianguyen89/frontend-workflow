@@ -1,8 +1,9 @@
 @use 'sass:meta';
 @use 'sass:map';
+@use 'helpers/variables';
 
 /*
- * @include background( $color, $image, $position, $repeat, $size )
+ * @include mixins.background( $color, $image, $position, $repeat, $size )
  */
 @mixin background($args...) {
     @each $name, $value in meta.keywords($args) {
@@ -11,7 +12,7 @@
         }
 
         @if $name=='image' {
-            background-image: url('#{$image_url}/#{$value}');
+            background-image: url('#{variables.$image_url}/#{$value}');
         }
 
         @if $name=='position' {
@@ -29,21 +30,21 @@
 }
 
 /*
- * @include background-image($name)
+ * @include mixins.background-image($name)
  */
 @mixin background-image($name) {
-    background-image: url('#{$image_url}/#{$name}');
+    background-image: url('#{variables.$image_url}/#{$name}');
 }
 
 /*
- * @include iframe-absolute( $ratio )
+ * @include iframe-absolute( $ratio : 45% )
  */
 @mixin iframe-absolute() {
     position: relative;
 
     &::before {
         display: block;
-        padding-top: var(--ratio, 45%);
+        padding-top: $ratio;
         content: '';
     }
 
@@ -76,22 +77,22 @@
 }
 
 /*
- * @include a-hover-line( $color, $thickness )
+ * @include a-hover-line( $color, $thickness, $position )
  */
-@mixin a-hover-line() {
+@mixin a-hover-line($color: #b3d189, $thickness: 1px, $position: 0px) {
     position: relative;
 
     &::after {
         position: absolute;
-        bottom: var(--position, 1px);
+        bottom: $position;
         left: 0;
         transform: scale(0, 1);
         transform-origin: right top;
         transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         will-change: transform;
-        background: var(--color, #0083C7);
+        background: $color;
         width: 100%;
-        height: var(--thichness, 1px);
+        height: $thickness;
         content: '';
     }
 
@@ -111,8 +112,137 @@
 @mixin font-size($size: $font-size-base) {
     font-size: $size;
 
-    @media only screen and (max-width: map.get($grid-breakpoints, 'smp')) {
+    @media only screen and (max-width: map.get(variables.$grid-breakpoints, 'smp')) {
         $size-smp: calc($size * 100 / $font-size-base);
         font-size: #{$size-smp}+'%';
+    }
+}
+
+@mixin button-modify($args...) {
+    $local_color: '';
+    $local_icon: '';
+    $local_icon_hover: '';
+
+    @each $name, $value in meta.keywords($args) {
+        @if $name=='color' {
+            $local_color: $value;
+            border-color: $value;
+
+            background-color: $value;
+
+            &:hover {
+                color: $value;
+
+                ._ico-l::before {
+                    border-right-color: $value;
+                }
+
+                ._ico-r::before {
+                    border-left-color: $value;
+                }
+
+                &::before {
+                    background-color: $value;
+                }
+            }
+        }
+
+        @if $name=='icon' {
+            $local_icon: $value;
+        }
+
+        @if $name=='iconHover' {
+            $local_icon_hover: $value;
+
+            &:hover ._ico-r::before,
+            &:hover ._ico-l::before {
+                @include mixins.background($image: $value);
+            }
+        }
+
+        @if $name=='revertStatus' {
+            @if $value==true {
+                background-color: #fff;
+                color: $local_color;
+
+                ._ico-r::before,
+                ._ico-l::before {
+                    @include mixins.background($image: $local_icon_hover);
+                }
+
+                &:hover {
+                    background-color: $local_color !important;
+                    color: #fff;
+
+                    ._ico-r::before,
+                    ._ico-l::before {
+                        @include mixins.background($image: $local_icon);
+                    }
+                }
+            }
+        }
+
+        @if $name=='width' {
+            min-width: $value;
+        }
+
+        @if $name=='height' {
+            height: $value;
+        }
+
+        @if $name=='fontSize' {
+            @include font-size($value);
+        }
+
+        @if $name=='fontWeight' {
+            font-weight: $value;
+        }
+
+        @if $name=='letterSpacing' {
+            letter-spacing: $value;
+        }
+
+        @if $name=='transitionSpeed' {
+            -webkit-transition: all $value;
+            transition: all $value;
+
+            &::before,
+            ._ico-l::before,
+            ._ico-r::before {
+                -webkit-transition: all $value;
+                transition: all $value;
+            }
+        }
+
+        @if $name=='radius' {
+            border-radius: $value;
+
+            &::before {
+                border-radius: $value;
+            }
+        }
+
+        @if $name=='shadow' {
+            @if $value==bottom {
+                &::before {
+                    position: absolute;
+                    right: -10px;
+                    bottom: -10px;
+                    z-index: -1;
+                    background: #edece2;
+                    width: 100%;
+                    height: 100%;
+                    content: '';
+                }
+
+                &:hover {
+                    border-color: transparent;
+                }
+            }
+
+            @else {
+                box-shadow: 0 0 10px 1px rgba(51, 51, 51, 0.2);
+            }
+        }
     }
 }

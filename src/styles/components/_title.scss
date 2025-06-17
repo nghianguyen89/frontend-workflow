@@ -1,7 +1,9 @@
 @use 'sass:map';
+@use '../helpers/variables';
+@use '../helpers/mixins';
 
 
 
-@media only screen and (max-width: map.get($grid-breakpoints, 'smp')) {
+@media only screen and (max-width: variables.$media_query_smp) {
     
 }

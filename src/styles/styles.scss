@@ -1,36 +1,32 @@
-/*!
- * PLUGINS
- */
-@import 'plugins.scss';
-
-
 /* helpers */
-@import 'helpers/fonts';
-@import 'helpers/variables';
-@import 'helpers/functions';
-@import 'helpers/mixins';
-@import 'helpers/ultilities';
-@import 'helpers/animate_custom';
+@use 'helpers/fonts';
+@use 'helpers/animate_custom';
 
 /*!
  * THEMES
 !*/
 
 /* components */
-@import 'components/hamburgers/hamburgers';
-@import 'components/title';
-@import 'components/button';
+// @use 'components/hamburgers/hamburgers';
+@use 'components/title';
+@use 'components/button';
 
 
 /* templates */
-@import 'layout/base';
-@import 'layout/header';
-@import 'layout/footer';
-@import 'layout/form';
+@use 'layout/base';
+@use 'layout/header';
+@use 'layout/footer';
+@use 'layout/common';
+
+
+/* form */
+// @use 'layout/form';
+// @use 'pages/contact';
+
 
 /* pages */
-@import 'pages/homepage';
+@use 'pages/homepage';
+
 
 /* wordpress */
-@import 'wordpress';
-@import 'theme_customize';
+@use 'wordpress';

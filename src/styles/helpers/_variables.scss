@@ -9,14 +9,11 @@
     /*
     * FONTS
     */
-    --cus-font-family-base: "noto-sans-cjk-jp", sans-serif;
+    --cus-font-family-base: "Noto Sans JP", sans-serif;
     --cus-font-weight-base: 400;
     --cus-font-style-base: normal;
     --cus-font-size-base: 15px;
     --cus-font-size-smp-base: 100%;
-
-    --cus-font-family-title: 'Noto Serif JP', sans-serif;
-    --cus-font-weight-title: 500;
 
     /*
     * LINE-HEIGHT
@@ -26,12 +23,12 @@
     /*
     * COLORS
     */
-    --cus-text-color-base: #3B3936;
+    --cus-text-color-base: #000;
 
     /*
     * CONTAINER WIDTH
     */
-    --cus-container-default: 1200px;
+    --cus-container-default: 1280px;
     --cus-container-default-smp: 90%;
     --cus-container-default-padding: 0;
 
@@ -40,7 +37,6 @@
     */
     --cus-transition-speed: 0.5s;
 }
-
 
 
 /*
@@ -54,7 +50,9 @@ $grid-breakpoints: (
     lg: 992px,
     xl: 1200px,
     xxl: 1400px,
-    smp: 768px) !default;
+    smp: 768px
+) !default;
 
 $media_query_pc_only: map.get($grid-breakpoints, 'smp') + 1;
 $media_query_smp: map.get($grid-breakpoints, 'smp');
+$image_url: '../images';

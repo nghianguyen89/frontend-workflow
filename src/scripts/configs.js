@@ -13,7 +13,7 @@ if (typeof id_site !== 'undefined' && typeof id_contents !== 'undefined') {
     path_media = domain_user + '/lancelot/common_files/images/public/';
 } else if (typeof admin_url !== 'undefined' && typeof theme_url !== 'undefined') {
     is_wordpress = true;
-    path_media = domain_user + '/wp/wp-content/uploads/';
+    path_media = site_url + '/wp-content/uploads/';
 } else if (domain_user.search('kariup.c-unit.co.jp') != -1) {
     is_kariup = true;
     path_media = domain_user + '/html/' + project_name + '/assets/images/';

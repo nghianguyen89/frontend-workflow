@@ -2,12 +2,11 @@ extends _templates/default
 include _helpers/mixins
 
 block variables
-	-title = 'Subpage'		// change page title
-	-bodyClass = ''			// specify class name of page
-	-description = ''		// page description
-	-keywords = ''			// page keywords
-	-author = ''			// page author
-	-copyright = ''			// page copyright
+	-title = 'ページタイトル'
 
 block container
-	//- your content here
+
+	+main_title(title, 'Title English')
+
+	.container
+		button.glow-on-hover(type="button") HOVER ME, THEN CLICK ME! 

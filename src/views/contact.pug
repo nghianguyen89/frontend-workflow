@@ -1,0 +1,154 @@
+extends _templates/default
+include _helpers/mixins
+
+block variables
+	-title = 'お問い合わせ'
+
+block container
+
+	+main_visual({
+		text_jp:'お問い合わせ',
+		text_en:'contact',
+		img_pc: 'main_visual_default8.jpg',
+		img_smp: 'main_visual_default8smp.jpg',
+	})
+
+	.form_page.contact
+
+		.form_page__description 
+			.form_page__description_block01
+				.container
+					+title({en: 'TEL', ja: 'お電話でのお問い合わせ'})
+					p._note ※お急ぎの場合や診察等のご予約のキャンセルや変更はお電話にてご連絡をお願いします。
+					dl 
+						dt.wf-ador-hairline
+							span.tel-text 052-561-5766
+						dd.wf-yumincho 平日9:00〜19:00(土日祝日は除く)
+
+			.form_page__description_block02
+				.container
+					+title({en: 'CONTACT<br class="smp">FORM', ja: 'フォームでのお問い合わせ'})
+					p 
+						| 当院への診察内容や採用に関するお問い合わせについては、下記のフォームまたはお電話にてご連絡ください。
+						br
+						| お問い合わせいただきました内容は後日、担当者からご連絡させていただきます。
+					p 必要事項をご記入いただき「確認画面はこちら」を押してください。
+					p._note ※お問い合わせ内容によっては、回答にお時間をいただく場合がございますので予めご了承ください。
+
+		.container
+			.form_page__detail
+				dl.form_group
+					dt.form_mandatory
+						span._title お名前
+					dd
+						+form_item({type:'text', class:'form_input _w275', placeholder:'例)今津太郎'})
+
+					dt.form_mandatory
+						span._title お名前(フリガナ)
+					dd
+						+form_item({type:'text', class:'form_input _w275', placeholder:'例)イマズタロウ'})
+
+					dt.form_mandatory
+						span._title メールアドレス
+					dd
+						+form_item({type:'text', class:'form_input', placeholder:'例)abc@imazu-cl.com'})
+
+					dt.form_mandatory
+						span._title 電話番号
+					dd
+						+form_item({type:'text', class:'form_input', placeholder:'例)00000000000'})
+
+					dt
+						span._title 郵便番号
+					dd
+						+form_item({type:'text', id:'zipcode', class:'form_input _w185', placeholder:'例)4510042'})
+						span._note-r01 郵便番号をご入力後、自動で住所が入力されます。
+
+					dt
+						span._title 住所
+					dd
+						+form_item({type:'textarea', id:'address', class:'form_textarea _h75', placeholder:'例)愛知県名古屋市西区那古野2-22-16'})
+
+					dt.form_mandatory
+						span._title ご希望の連絡方法
+					dd
+						._list
+							+form_item({
+								type:'radio', class:'form_input', name:'inquiry_type', 
+								value:[
+									'お電話',
+									'メール',
+									'どちらでも可',
+								]
+							})
+
+					dt.form_mandatory
+						span._title ご希望の連絡時間帯
+					dd
+						._list
+							+form_item({
+								type:'radio', class:'form_input', name:'inquiry_time', 
+								value:[
+									'午前',
+									'午後',
+									'どちらでも可',
+								]
+							})
+
+					dt.form_mandatory
+						span._title お問い合わせ項目
+					dd
+						._list._1line
+							+form_item({
+								type:'radio', class:'form_input', name:'inquiry_item', 
+								value:[
+									'午前診察に関するお問い合わせ',
+									'採用に関するお問い合わせ',
+									'その他',
+								]
+							})
+
+					dt.form_mandatory.last
+						span._title お問い合わせ内容
+					dd.last
+						+form_item({type:'textarea', class:'form_textarea', placeholder:'具体的なお問い合わせ内容をご記入ください。'})
+
+				.form_privacy
+					.form_privacy__scroll
+						h3 個人情報保護方針
+						p 医療法人いまず外科は、お客様の大切な情報を如何なる事があっても、事前の同意を得ずに本来の目的以外の理由で第三者に公開する事は致しません。
+						p 医療法人いまず外科は、如何なる業務においても個人を特定できる内容について、そのプライバシー保護、情報の機密を保持するよう努めます。
+						p 1．個人情報とは、あらゆる業務でご提供して頂くお客様の氏名、メールアドレス、電話番号等、お客様個人を特定することのできる情報を言います。
+						p 2．お客様より収集させて頂いた個人情報は、不正アクセス、紛失、窃取がないよう適切に管理し、収集目的の範囲内でのみ利用いたします。
+						p 
+							| 3．個人情報は、お客様の承諾が無い限り、第三者への情報の開示、提供を、一切致しません。
+							br
+							| ただし、以下に該当する場合はこの限りではありません。
+							br
+							| （１）個人情報の開示について、お客様の同意がある時。
+							br
+							| （２）法律または、官公庁の要請により開示を求められた時。
+							br
+							| （３）人の生命、身体、又は財産の保護のために必要がある場合において、本人の同意を得る事が困難である時。
+						p 
+							| 4．個人情報の利用目的
+							br
+							| 当院は、取得した個人情報を当該業務の遂行に必要な範囲内で利用します。また、それら以外の目的に利用することはありません。会社における具体的な個人情報の利用目的は次のとおりです。
+							br
+							| ・当院が取り扱う業務及びこれらに付帯・関連するサービスの提供
+							br
+							| 上記の利用目的を変更する場合には、その内容をご本人に対し、原則として書面等により通知し 、またはホームページ等により公表します。
+						p 5．医療法人いまず外科が保有する個人情報に関して適用される法令、規範を遵守するとともに、上記各項におけるポリシーを適宜見直し、改善していきます。
+						p 個人情報保護方針に関するお問い合わせは、052-561-5766（平日9:00〜19:00(土日祝日は除く)）までお問い合わせ下さい。
+
+				.form_acceptance
+					p 
+						| 個人情報の利用に関しましては上記「プライバシーポリシー」をご覧いただき、
+						br
+						| 同意していただく必要がございます。
+					p
+						+form_item({type:'acceptance', value: 'プライバシーポリシーに同意する'})
+
+				ul.form_btn_group
+					li.form_btn.btn.btn-input._disabled
+						+form_item({type:'submit', value:'確認画面はこちら', disabled:'disabled'})

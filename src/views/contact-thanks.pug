@@ -1,0 +1,27 @@
+extends _templates/default
+include _helpers/mixins
+
+block variables
+	-title = 'お問い合わせ'
+
+block container
+
+	+main_visual({
+		text_jp:'お問い合わせ・完了',
+		text_en:'contact・thanks',
+		img_pc: 'main_visual_default8.jpg',
+		img_smp: 'main_visual_default8smp.jpg',
+	})
+
+	.form_page.contact.form_page_thanks
+
+		.container
+			h2._title お問い合わせ完了
+			.thanks_box
+				p お問い合わせを受付いたしました。
+				p
+					| お問い合わせいただきまして誠にありがとうございます。
+					br
+					| 内容を確認いたしまして、改めて担当者よりご連絡いたしますので、今しばらくお待ち頂けますようお願いいたします。
+				p._link
+					+linkto({href: 'index.html', text: 'トップページへ戻る'})

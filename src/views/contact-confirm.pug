@@ -1,0 +1,55 @@
+extends _templates/default
+include _helpers/mixins
+
+block variables
+	-title = 'お問い合わせ'
+
+block container
+
+	+main_visual({
+		text_jp:'お問い合わせ・確認',
+		text_en:'contact・confirm',
+		img_pc: 'main_visual_default8.jpg',
+		img_smp: 'main_visual_default8smp.jpg',
+	})
+
+	.form_page.contact.form_page_confirm
+
+		.container
+			.form_page__detail
+				h3._confirm_title 内容を確認してください。
+
+				dl.form_group
+					dt お名前 
+					dd 〇〇〇
+
+					dt お名前(フリガナ) 
+					dd 〇〇〇
+
+					dt メールアドレス 
+					dd abc@example.com
+
+					dt 電話番号 
+					dd 000-000-000
+
+					dt ご住所 
+					dd 〒000-0000 〇県〇〇市〇〇町
+
+					dt ご希望の連絡方法 
+					dd 〇〇〇
+
+					dt ご希望の連絡時間帯 
+					dd 〇〇〇
+
+					dt お問い合わせ項目 
+					dd 〇〇〇
+
+					dt お問い合わせ内容 
+					dd 説明説明説明説明説明説明説明説明説明説明
+
+				ul.form_btn_group.form_btn_group_confirm
+					li.btn.form_btn.btn-button
+						+form_item({type:'button', value:'戻って訂正する'})
+
+					li.btn.form_btn.btn-input
+						+form_item({type:'submit', value:'送信する'})

@@ -1,13 +1,13 @@
-/*
- * font
- */
-.wf-notosans {
-    font-family: 'Noto Sans CJK JP', sans-serif;
+@use 'helpers/variables';
+@use 'helpers/mixins';
+
+/* font */
+.f_mplus1p {
+    font-style: normal;
+    font-weight: 500;
+    font-family: var(--cus-font-mplus1p);
 }
 
-.wf-notoserif,
-.tel-text,
-.btn {
-    font-weight: 500;
-    font-family: "Noto Serif JP", serif;
+%f_mplus1p{
+    @extend .f_mplus1p;
 }
