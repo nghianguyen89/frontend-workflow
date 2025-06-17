@@ -6,7 +6,7 @@
  ***/
 
 /*
- HISTORY :
+HISTORY :
  *** version 1.1 (Jan 20, 2017) : 
  *- detect Microsoft Edge 
  *
@@ -19,7 +19,7 @@
  *- detect browser engine (webkit/gecko)
  *
 
- HOW TO USE :
+HOW TO USE :
  * Internet Explorer
  * |__IE7       :   .ie7 cssname{...}
  * |__IE8       :   .ie8 cssname{...}
@@ -61,20 +61,20 @@ function detect_browser(u) {
             !/opera|webtv/i.test(ua) && /msie\s(\d)/.test(ua)
                 ? 'ie ie' + (!(RegExp.$1 == 1) ? RegExp.$1 : 10)
                 : isEdge
-                ? ' edge'
-                : is('gecko/')
-                ? g + ' firefox'
-                : isOpera
-                ? ' opera'
-                : is('chrome')
-                ? w + ' chrome'
-                : is('applewebkit/')
-                ? w + ' ' + s + (/version\/(\d+)/.test(ua) ? ' ' + s + RegExp.$1 : '')
-                : is('mozilla/')
-                ? isIE11
-                    ? 'ie ie11'
-                    : g
-                : '',
+                    ? ' edge'
+                    : is('gecko/')
+                        ? g + ' firefox'
+                        : isOpera
+                            ? ' opera'
+                            : is('chrome')
+                                ? w + ' chrome'
+                                : is('applewebkit/')
+                                    ? w + ' ' + s + (/version\/(\d+)/.test(ua) ? ' ' + s + RegExp.$1 : '')
+                                    : is('mozilla/')
+                                        ? isIE11
+                                            ? 'ie ie11'
+                                            : g
+                                        : '',
         ];
     var c = arrClass.join(' ');
     document.documentElement.className += ' ' + c;

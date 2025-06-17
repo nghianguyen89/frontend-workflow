@@ -1,47 +1,216 @@
-/*! anime fade-in css !*/
-.inview {
+/* inview */
+[class*="inview-"] {
+    visibility: hidden;
     opacity: 0;
+    transition: 1s transform, 1s opacity;
 }
 
-.inview.anime_down {
+@media (min-width:769px) {
+    .inview-up {
+        transform: translate3d(0, 30px, 0)
+    }
+
+    .inview-down {
+        transform: translate3d(0, -30px, 0)
+    }
+
+    .inview-left {
+        transform: translate3d(30px, 0, 0)
+    }
+
+    .inview-right {
+        transform: translate3d(-30px, 0, 0)
+    }
+}
+
+.inview-active {
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
     opacity: 1;
 }
 
-.anime_down {
-    -webkit-animation: anime_down 2s ease-in 0s;
-    animation: anime_down 2s ease-in 0s;
+.delay1 {
+    transition-delay: .1s
 }
 
-@-webkit-keyframes anime_down {
-    0% {
-        transform: translateY(100%);
+.delay2 {
+    transition-delay: .2s
+}
+
+.delay3 {
+    transition-delay: .3s
+}
+
+.delay4 {
+    transition-delay: .4s
+}
+
+.delay5 {
+    transition-delay: .5s
+}
+
+.delay6 {
+    transition-delay: .6s
+}
+
+.delay7 {
+    transition-delay: .7s
+}
+
+.delay8 {
+    transition-delay: .8s
+}
+
+.delay9 {
+    transition-delay: .9s
+}
+
+.delay10 {
+    transition-delay: 1s
+}
+
+/* background extend */
+.bgextend {
+    position: relative;
+    opacity: 0;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-name: bgextendAnimeBase;
+    overflow: hidden;
+}
+
+@keyframes bgextendAnimeBase {
+    from {
         opacity: 0;
     }
 
-    30% {
-        transform: translateY(30%);
-        opacity: 0;
-    }
-
-    100% {
-        transform: translateY(0);
+    to {
         opacity: 1;
     }
 }
 
-@keyframes anime_down {
-    0% {
-        transform: translateY(100%);
-        opacity: 0;
-    }
+.bgappear {
+    opacity: 0;
+    animation-duration: 1s;
+    animation-delay: 0.6s;
+    animation-fill-mode: forwards;
+    animation-name: bgextendAnimeSecond;
+}
 
-    30% {
-        transform: translateY(30%);
+@keyframes bgextendAnimeSecond {
+    0% {
         opacity: 0;
     }
 
     100% {
-        transform: translateY(0);
         opacity: 1;
+    }
+}
+
+.bgLRextend::before {
+    position: absolute;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-name: bgLRextendAnime;
+    background-color: #36A100;
+    width: 100%;
+    height: 100%;
+    content: "";
+}
+
+@keyframes bgLRextendAnime {
+    0% {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+
+    50% {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+
+    50.001% {
+        transform-origin: right;
+    }
+
+    100% {
+        transform: scaleX(0);
+        transform-origin: right;
+    }
+}
+
+.bginnerTrg,
+.bgLRendTrg {
+    opacity: 0;
+}
+
+@keyframes arrow {
+    50% {
+        right: .2em;
+        opacity: 1;
+    }
+
+    100% {
+        right: -.4em;
+        opacity: 0;
+    }
+}
+
+/* anime sroll left to right */
+@keyframes marquee_ltr {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+/* anime sroll right to left */
+@keyframes marquee_rtl {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes arrow {
+    0% {
+        -webkit-transform: translate3d(-50%, 0, 0);
+        transform: translate3d(-50%, 0, 0);
+    }
+
+    60% {
+        -webkit-transform: translate3d(-50%, 100px, 0);
+        transform: translate3d(-50%, 100px, 0);
+    }
+
+    100% {
+        -webkit-transform: translate3d(-50%, 100px, 0);
+        transform: translate3d(-50%, 100px, 0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
     }
 }

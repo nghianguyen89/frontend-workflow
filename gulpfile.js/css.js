@@ -3,64 +3,118 @@
  * Description  : Compile SCSS files to CSS files.
  * Note         : Using Gulp v4
  * Package      : npm install --save-dev gulp gulp-load-plugins pump browser-sync cssnano autoprefixer
- * Source folder: ./src/styles/
- * Build folder : ./build/assets/css/
  * ===========================================================================*/
 
-const configs = require('./configs');
-const bs = require('./browser-sync');
+/* Common */
+const configs = require('./_configs_');
 
+/* Packages */
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
+const argv = yargs(hideBin(process.argv)).argv;
 const { src, dest } = require('gulp');
-const $ = require('gulp-load-plugins')(configs.css.sass_configs);
+const $ = require('gulp-load-plugins')({
+    postRequireTransforms: {
+        sass: (sass) => {
+            return sass(require('sass'));
+        },
+    },
+    rename: {
+        'gulp-concat-css': 'concatCss',
+    },
+});
 const pump = require('pump');
-
+const log = require('fancy-log');
 const cssnano = require('cssnano');
 const autoprefixer = require('autoprefixer');
 
-const del = import('del');
+
+/* Task configs */
+const dir_src = configs.source_dir;
+const dir_public = configs.dist_dir;
+const plugins_src = [
+    dir_src + '/assets/plugins/normalize/normalize.css',
+    // dir_src + '/assets/plugins/bootstrap/bootstrap.min.css',
+    dir_src + '/assets/plugins/**/*.css'
+];
+const plugins_dest = dir_src + '/styles/';
+const css_src = dir_src + '/styles/*.scss';
+const css_dest = dir_public + '/assets/css/';
+
+const media_url_local = '../images';
+const media_url_wordpress = '../../../../uploads';
 
 
+/* Task */
 exports.build_css = async function build_css() {
+    log('░░░░░░░░░░⌛ Start concatenating the plugins CSS files... ░░░░░░░░░░');
 
-    await Promise.resolve(del).then((obj) => {
-        obj.deleteSync(configs.css.plugins.dest + '_plugins.scss');
-    });
+    return new Promise((resolve, reject) => {
 
-    return pump(
-        /* concat all CSS files inside ./src/assets/plugins/ and move to ./src/styles/_plugins.scss */
-        src(configs.css.plugins.src),
-        $.concat('_plugins.scss'),
-        // $.postcss([autoprefixer(), cssnano()]),
-        dest(configs.css.plugins.dest),
+        pump(
+            src(plugins_src),
+            $.concat('_plugins.scss'),
+            dest(plugins_dest),
+            (error) => {
+                if (error)
+                    log(err);
+                else
+                    log('░░░░░░░░░░ ✓ The plugins CSS files is concatenated. ░░░░░░░░░░\n');
+            }
+        ).on('end', resolve);
 
-        /* add varible $image_url before compile scss to css */
-        src(configs.css.src),
-        $.plumber(configs.onError),
-        $.header('$image_url:"' + configs.media_url.local + '";'),
+    }).then(
 
-        /* compile scss */
-        $.if(configs.env !== 'dev', $.sourcemaps.init()),
-        $.sass().on('error', $.sass.logError),
-        $.if(configs.env !== 'dev', $.postcss([autoprefixer(), cssnano()])),
-        $.if(configs.env !== 'dev', $.rename({ suffix: '.min' })),
-        $.if(configs.env !== 'dev', $.sourcemaps.write('.')),
-        dest(configs.css.dest),
+        (result) => {
+            log('░░░░░░░░░░⌛ Start compiling .SCSS files... ░░░░░░░░░░');
 
-        /* create css for wordpress embed */
-        $.if(configs.env !== 'dev', $.replace(configs.media_url.local, configs.media_url.wordpress)),
-        $.if(configs.env !== 'dev', $.rename({
-            dirname: './',
-            basename: 'style',
-            prefix: 'wordpress-',
-            suffix: '.min',
-            extname: '.css'
-        })),
-        $.if(configs.env !== 'dev', dest(configs.css.dest)),
+            pump(
+                src(css_src, { sourcemaps: true }),
+                $.plumber({
+                    errorHandler: function (error) {
+                        log(error.toString());
+                        this.emit('end');
+                    }
+                }),
+                $.header('$image_url:"' + media_url_local + '";'),
+                $.sass().on('error', $.sass.logError),
+                $.if(argv == 'prod', $.postcss([autoprefixer(), cssnano()])),
+                $.rename({ suffix: '.min' }),
+                dest(css_dest, { sourcemaps: '.' }),
+                (error) => {
+                    if (error)
+                        log(error);
+                    else
+                        log('░░░░░░░░░░ ✔ .SCSS files have been compiled to .CSS ░░░░░░░░░░');
+                }
+            );
 
-        /* notify when compile done */
-        $.notify({ message: 'SCSS is compiled to CSS.', onLast: true }),
+            setTimeout(function(){
+                log('░░░░░░░░░░⌛ Start convert to Wordpress CSS... ░░░░░░░░░░');
+                
+                pump(
+                    src(css_dest + 'styles.min.css', { sourcemaps: true }),
+                    $.plumber({
+                        errorHandler: function (error) {
+                            log(error.toString());
+                            this.emit('end');
+                        }
+                    }),
+                    $.replace(media_url_local, media_url_wordpress),
+                    $.rename({ prefix: 'wordpress-' }),
+                    dest(dir_src + '/wp_themes/assets/css', { sourcemaps: '.' }),
+                    (error) => {
+                        if (error)
+                            log(error);
+                        else
+                            log('░░░░░░░░░░ ✔ Wordpress CSS files done ░░░░░░░░░░');
+                    }
+                );
+            }, 1500);
+        },
+        (error) => {
+            log(error);
+        }
 
-        /* reload browser for dev */
-        $.if(configs.env == 'dev', bs.browsersync_reload)
     );
 };

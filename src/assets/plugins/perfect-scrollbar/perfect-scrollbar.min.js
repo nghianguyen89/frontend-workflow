@@ -1,4 +1,6 @@
-/*!
+/*! perfect-scrollbar v1.5.3 */
+
+/*
  * perfect-scrollbar v1.5.3
  * Copyright 2021 Hyunje Jun, MDBootstrap and Contributors
  * Licensed under MIT

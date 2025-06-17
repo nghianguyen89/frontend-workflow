@@ -7,6 +7,7 @@
  *  
  *  2013 Kazuma Nishihata 
  *  http://www.to-r.net
+ *  https://github.com/to-r/jquery.heightLine.js
  *  
  *--------------------------------------------------------------------------*/
 ;(function ($) {
@@ -114,7 +115,10 @@
 function _heightline(settings) {
 
     // generate random ID string
-    var id_hl = 'HL' + Math.uuid(6, 16);
+    var id_hl = '_hl_' + Math.uuid(6, 16);
+
+    // class
+    var is_hl = '_is-hl';
 
     // default settings
     var defaultSettings = {
@@ -122,7 +126,7 @@ function _heightline(settings) {
         itemPerRow: 0,
         supportTableCell: false,
         device: 'both',
-        delayFunc: 500,
+        delayFunc: 50,
     };
 
     // get settings
@@ -136,60 +140,68 @@ function _heightline(settings) {
         _supportTableCell = _settings.supportTableCell,
         _device = _settings.device,
         _delay = _settings.delayFunc;
-        
+
     // process heightline if element exist
     if (jQuery(_item).length > 0) {
-        setTimeout(function () {
-            // heighline all item if itemPerRow = 0
-            if (_number == 0) {
-                if (
-                    _device == 'both' ||
-                    (_device == 'pc' && viewportW > viewportSMP) ||
-                    (_device == 'smp' && viewportW <= viewportSMP)
-                ) {
-                    // set height
-                    jQuery(_item).heightLine();
-                    // set width to support vertical-align width display:tale-cell
-                    if (_supportTableCell)
-                        jQuery(_item)
-                            .css('width', jQuery(_item).width())
-                            .css('display', 'table-cell');
-                }
-            } else {
-                // add class heightline
-                var count = 0,
-                    row = 1;
-                jQuery(_item).each(function () {
-                    count++;
-                    jQuery(this).addClass(id_hl + '-' + row);
-                    if (count >= _number) {
-                        row++;
-                        count = 0;
+        jQuery(_item).on('inview', function (event, isInView) {
+            if (isInView) {
+                setTimeout(function () {
+                    // heighline all item if itemPerRow = 0
+                    if (_number == 0) {
+                        if (
+                            _device == 'both' ||
+                            (_device == 'pc' && viewportW > viewportSMP) ||
+                            (_device == 'smp' && viewportW <= viewportSMP)
+                        ) {
+                            // set height
+                            jQuery(_item).removeClass(function (index, css) {
+                                return (css.match(/\_hl_\S+/g) || []).join(' ');
+                            }).css('height', 'auto').heightLine().addClass(is_hl);
+                            // set width to support vertical-align width display:tale-cell
+                            if (_supportTableCell)
+                                jQuery(_item)
+                                    .css('width', jQuery(_item).width())
+                                    .css('display', 'table-cell');
+                        }
+                    } else {
+                        // add class heightline
+                        var count = 0,
+                            row = 1;
+                        jQuery(_item).each(function () {
+                            count++;
+                            jQuery(this).addClass(id_hl + '-' + row);
+                            if (count >= _number) {
+                                row++;
+                                count = 0;
+                            }
+                        });
+                        // calc rows number max
+                        var totalItem = jQuery(_item).length;
+                        var maxRow = Math.floor(
+                            totalItem % _number > 0
+                                ? totalItem / _number + 1
+                                : totalItem / _number
+                        );
+                        // process heightline
+                        for (var i = 1; i <= maxRow; i++) {
+                            if (
+                                _device == 'both' ||
+                                (_device == 'pc' && viewportW > viewportSMP) ||
+                                (_device == 'smp' && viewportW <= viewportSMP)
+                            ) {
+                                jQuery('.' + id_hl + '-' + i).removeClass(function (index, css) {
+                                    return (css.match(/\_hl_\S+/g) || []).join(' ');
+                                }).css('height', 'auto').heightLine().addClass(is_hl);
+                                // set width to support vertical-align width display:tale-cell
+                                if (_supportTableCell)
+                                    jQuery('.' + id_hl + '-' + i)
+                                        .css('width', jQuery(_item).width())
+                                        .css('display', 'table-cell');
+                            }
+                        }
                     }
-                });
-                // calc rows number max
-                var totalItem = jQuery(_item).length;
-                var maxRow = Math.floor(
-                    totalItem % _number > 0
-                        ? totalItem / _number + 1
-                        : totalItem / _number
-                );
-                // process heightline
-                for (var i = 1; i <= maxRow; i++) {
-                    if (
-                        _device == 'both' ||
-                        (_device == 'pc' && viewportW > viewportSMP) ||
-                        (_device == 'smp' && viewportW <= viewportSMP)
-                    ) {
-                        jQuery('.' + id_hl + '-' + i).heightLine();
-                        // set width to support vertical-align width display:tale-cell
-                        if (_supportTableCell)
-                            jQuery('.' + id_hl + '-' + i)
-                                .css('width', jQuery(_item).width())
-                                .css('display', 'table-cell');
-                    }
-                }
+                }, _delay);
             }
-        }, _delay);
+        });
     }
 }

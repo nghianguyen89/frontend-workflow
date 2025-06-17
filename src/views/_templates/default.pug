@@ -1,0 +1,45 @@
+-env = env
+-file_minify = env == 'prod' ? '.min' : '.min'
+
+-depth = (relativePath.match(/[\/\\]/g) || []).length;
+-relativeRoot = new Array(depth + 1).join( '../' );
+
+block variables
+
+doctype html
+html(lang="ja")
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+
+		title=(isHome || false) ? (title || 'Untitled') : title + '｜' + (titleDescription || '')
+		meta(name="description", content=(description || ''))
+		meta(name="keywords", content=(keywords || ''))
+		meta(name="author", content=(author || ''))
+		meta(name="copyright", content=(copyright || ''))
+		meta(name="robots", content="index, follow")
+
+		link(rel="icon", href=relativeRoot + "assets/images/favicon.png", type="image/png")
+
+		link(rel="preconnect", href="https://fonts.googleapis.com")
+		link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
+		link(href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200..900&display=swap", rel="stylesheet")
+		script.
+			!function(e){var t,a={kitId:"hab0fxi",scriptTimeout:3e3,async:!0},c=e.documentElement,n=setTimeout(function(){c.className=c.className.replace(/\bwf-loading\b/g,"")+" wf-inactive"},a.scriptTimeout),s=e.createElement("script"),i=!1,o=e.getElementsByTagName("script")[0];c.className+=" wf-loading",s.src="https://use.typekit.net/"+a.kitId+".js",s.async=!0,s.onload=s.onreadystatechange=function(){if(t=this.readyState,!i&&(!t||"complete"==t||"loaded"==t)){i=!0,clearTimeout(n);try{Typekit.load(a)}catch(e){}}},o.parentNode.insertBefore(s,o)}(document);		
+		link(rel="stylesheet", href=relativeRoot + 'assets/css/styles' + file_minify + '.css')
+
+	body(class=isHome ? 'home-page' : 'sub-page page-' + (bodyClass || 'common') data-env=env)
+		#outside
+
+			header#header
+				include ../_blocks/header
+
+			main#wrapper
+				block container
+
+			footer#footer
+				include ../_blocks/footer
+
+		script(src=relativeRoot + 'assets/js/jquery.min.js')
+		script(src=relativeRoot + 'assets/js/jquery-migrate.min.js')
+		script(src=relativeRoot + 'assets/js/bundle' + file_minify + '.js')

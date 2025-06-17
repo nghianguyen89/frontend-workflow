@@ -5,18 +5,73 @@
  * Package      : npm install --save-dev gulp
  * ===========================================================================*/
 
-const configs = require('./configs');
+/* Common */
+const configs = require('./_configs_');
 
-const { watch } = require('gulp');
+/* Packages */
+const { series, watch } = require('gulp');
+const browserSync = require('./browser-sync');
 
+
+/* Task configs */
+const dir_src = configs.source_dir;
+const dir_public = configs.dist_dir;
+const assets_src = dir_src + '/assets/';
 const { build_html } = require('./html');
 const { build_css } = require('./css');
 const { build_js } = require('./js');
-const { sync_assets } = require('./assets-sync');
+const assets = require('./assets');
 
+
+/* Task */
 exports.wf = async function watch_files() {
-    watch(configs.html.watch, build_html);
-    watch(configs.css.watch, build_css);
-    watch(configs.js.watch, build_js);
-    watch(configs.sync_assets.watch, sync_assets);
+
+    //░░░░░ pugjs
+    watch(
+        [
+            dir_src + '/views/**/*.pug'
+        ],
+        build_html
+    );
+
+    //░░░░░ css
+    watch(
+        [
+            dir_src + '/styles/**/*.scss',
+            '!' + dir_src + '/styles/_plugins.scss'
+        ],
+        build_css
+    );
+
+    //░░░░░ javascript
+    watch(
+        [
+            dir_src + '/scripts/**/*.js'
+        ],
+        build_js
+    );
+
+    //░░░░░ sync assets
+    watch(
+        [
+            assets_src + 'fonts/**/*.*',
+        ],
+        assets.sync_fonts
+    );
+
+    watch(
+        [
+            assets_src + 'images/**/*.*',
+        ],
+        assets.sync_images
+    );
+
+    watch(
+        [
+            assets_src + 'plugins/jquery/jquery.min.js',
+            assets_src + 'plugins/jquery/jquery-migrate.min.js',
+        ],
+        assets.sync_plugins
+    );
+
 };

@@ -1,27 +1,36 @@
-/* 
+/*!
  * PLUGINS
  */
 @import 'plugins.scss';
 
 
-/* 
- * THEMES
- */
-
 /* helpers */
+@import 'helpers/fonts';
 @import 'helpers/variables';
 @import 'helpers/functions';
 @import 'helpers/mixins';
 @import 'helpers/ultilities';
 @import 'helpers/animate_custom';
 
+/*!
+ * THEMES
+!*/
+
 /* components */
 @import 'components/hamburgers/hamburgers';
+@import 'components/title';
+@import 'components/button';
+
 
 /* templates */
 @import 'layout/base';
 @import 'layout/header';
 @import 'layout/footer';
+@import 'layout/form';
 
 /* pages */
 @import 'pages/homepage';
+
+/* wordpress */
+@import 'wordpress';
+@import 'theme_customize';

@@ -1,25 +1,118 @@
 @use 'sass:meta';
+@use 'sass:map';
 
+/*
+ * @include background( $color, $image, $position, $repeat, $size )
+ */
 @mixin background($args...) {
     @each $name, $value in meta.keywords($args) {
-        @if $name == 'color' {
+        @if $name=='color' {
             background-color: $value;
         }
 
-        @if $name == 'image' {
+        @if $name=='image' {
             background-image: url('#{$image_url}/#{$value}');
         }
 
-        @if $name == 'position' {
+        @if $name=='position' {
             background-position: $value;
         }
 
-        @if $name == 'repeat' {
+        @if $name=='repeat' {
             background-repeat: $value;
         }
 
-        @if $name == 'size' {
+        @if $name=='size' {
             background-size: $value;
         }
+    }
+}
+
+/*
+ * @include background-image($name)
+ */
+@mixin background-image($name) {
+    background-image: url('#{$image_url}/#{$name}');
+}
+
+/*
+ * @include iframe-absolute( $ratio )
+ */
+@mixin iframe-absolute() {
+    position: relative;
+
+    &::before {
+        display: block;
+        padding-top: var(--ratio, 45%);
+        content: '';
+    }
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+}
+
+/*
+ * @include transform( $transform )
+ */
+@mixin transform($transforms) {
+    -moz-transform: $transforms;
+    -o-transform: $transforms;
+    -ms-transform: $transforms;
+    -webkit-transform: $transforms;
+    transform: $transforms;
+}
+
+/*
+ * @include rotate( $deg )
+ */
+@mixin rotate($deg) {
+    @include transform(rotate(#{$deg}deg));
+}
+
+/*
+ * @include a-hover-line( $color, $thickness )
+ */
+@mixin a-hover-line() {
+    position: relative;
+
+    &::after {
+        position: absolute;
+        bottom: var(--position, 1px);
+        left: 0;
+        transform: scale(0, 1);
+        transform-origin: right top;
+        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        will-change: transform;
+        background: var(--color, #0083C7);
+        width: 100%;
+        height: var(--thichness, 1px);
+        content: '';
+    }
+
+    &:hover {
+        text-decoration: none;
+
+        &::after {
+            transform: scale(1, 1);
+            transform-origin: left top;
+        }
+    }
+}
+
+/*
+ * @include font-size( $size )
+ */
+@mixin font-size($size: $font-size-base) {
+    font-size: $size;
+
+    @media only screen and (max-width: map.get($grid-breakpoints, 'smp')) {
+        $size-smp: calc($size * 100 / $font-size-base);
+        font-size: #{$size-smp}+'%';
     }
 }

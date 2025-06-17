@@ -3,19 +3,18 @@
  * Description  : Task Gulp default
  * ===========================================================================*/
 
-const configs = require('./configs');
 const log = require('fancy-log');
 
 exports.default_task = async function default_task() {
     log(
         `----------------------------------------------------
 + List variable export for configs:
-    ├── configs:
-        ├── env: ${configs.env} (${typeof configs.env})
-        ├── production: ${configs.production} (${typeof configs.production})
-        ├── log: (${typeof configs.log})
-        ├── onError: (${typeof configs.onError})
-        ├── dir: (${typeof configs.dir})
+    // ├── configs:
+    //     ├── env: ${configs.env} (${typeof configs.env})
+    //     ├── production: ${configs.production} (${typeof configs.production})
+    //     ├── log: (${typeof configs.log})
+    //     ├── onError: (${typeof configs.onError})
+    //     ├── dir: (${typeof configs.dir})
 
 + Tasks for gulpfile.js
     ├── html (gulp html)

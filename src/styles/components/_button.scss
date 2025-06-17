@@ -1,0 +1,244 @@
+@use 'sass:meta';
+@use 'sass:map';
+
+
+@mixin button-modify($args...) {
+    $local_color: '';
+    $local_icon: '';
+    $local_icon_hover: '';
+
+    @each $name, $value in meta.keywords($args) {
+        @if $name=='color' {
+            $local_color: $value;
+            border-color: $value;
+
+            background-color: $value;
+
+            &:hover {
+                color: $value;
+
+                ._ico-l::before {
+                    border-right-color: $value;
+                }
+
+                ._ico-r::before {
+                    border-left-color: $value;
+                }
+
+                &::before {
+                    background-color: $value;
+                }
+            }
+        }
+
+        @if $name=='icon' {
+            $local_icon: $value;
+        }
+
+        @if $name=='iconHover' {
+            $local_icon_hover: $value;
+
+            &:hover ._ico-r::before,
+            &:hover ._ico-l::before {
+                @include background($image: $value);
+            }
+        }
+
+        @if $name=='revertStatus' {
+            @if $value==true {
+                background-color: #fff;
+                color: $local_color;
+
+                ._ico-r::before,
+                ._ico-l::before {
+                    @include background($image: $local_icon_hover);
+                }
+
+                &:hover {
+                    background-color: $local_color !important;
+                    color: #fff;
+
+                    ._ico-r::before,
+                    ._ico-l::before {
+                        @include background($image: $local_icon);
+                    }
+                }
+            }
+        }
+
+        @if $name=='width' {
+            min-width: $value;
+        }
+
+        @if $name=='height' {
+            height: $value;
+        }
+
+        @if $name=='fontSize' {
+            @include font-size($value);
+        }
+
+        @if $name=='fontWeight' {
+            font-weight: $value;
+        }
+
+        @if $name=='letterSpacing' {
+            letter-spacing: $value;
+        }
+
+        @if $name=='transitionSpeed' {
+            -webkit-transition: all $value;
+            transition: all $value;
+
+            &::before,
+            ._ico-l::before,
+            ._ico-r::before {
+                -webkit-transition: all $value;
+                transition: all $value;
+            }
+        }
+
+        @if $name=='radius' {
+            border-radius: $value;
+
+            &::before {
+                border-radius: $value;
+            }
+        }
+
+        @if $name=='shadow' {
+            @if $value==bottom {
+                &::before {
+                    position: absolute;
+                    right: -10px;
+                    bottom: -10px;
+                    z-index: -1;
+                    background: #edece2;
+                    width: 100%;
+                    height: 100%;
+                    content: '';
+                }
+
+                &:hover {
+                    border-color: transparent;
+                }
+            }
+
+            @else {
+                box-shadow: 0 0 10px 1px rgba(51, 51, 51, 0.2);
+            }
+        }
+    }
+}
+
+.btn {
+    //----- varible default
+    // --btn-color-text
+    // --btn-color-icon
+    // --btn-color-bg
+    // --btn-color-border
+    // --btn-font-size
+    // --btn-font-weight
+    // --btn-size-width
+    // --btn-size-height
+    // --btn-align-text
+
+    // display
+    display: inline-flex;
+    position: relative;
+    position: relative;
+    justify-content: var(--btn-align-text, center);
+    align-items: center;
+
+    outline: none;
+    border: 1px solid var(--btn-color-border, #0A89CB);
+
+    border-radius: 0;
+    background-color: var(--btn-color-bg, #fff);
+
+    padding: 10px 0;
+    width: var(--btn-size-width, auto);
+    height: var(--btn-size-height, 53px);
+
+    color: var(--btn-color-text, #0A89CB);
+    font-weight: var(--btn-font-weight, 700);
+    font-size: var(--btn-font-size, 18px);
+    text-align: var(--btn-align-text, center);
+
+    &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        transition: all 0.3s ease;
+        background-color: var(--btn-color-bg, #0A89CB);
+        width: 0%;
+        height: 100%;
+        content: "";
+    }
+
+    span {
+        display: inline-block;
+        position: relative;
+        z-index: 2;
+        padding: 0 36px;
+        width: 100%;
+
+        &::before,
+        &::after {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            background-color: var(--btn-color-bg, #0A89CB);
+            width: 15px;
+            height: 1px;
+            content: "";
+        }
+
+        &::before {
+            right: 0;
+        }
+
+        &::after {
+            right: -30px;
+            width: 30px;
+        }
+    }
+
+    &:hover {
+        --btn-color-text: #fff;
+        --btn-color-bg: #0A89CB;
+
+        text-decoration: none;
+
+        &::before {
+            width: 100%;
+        }
+
+        span {
+            &::before {
+                --btn-color-bg: #fff;
+            }
+
+            &::after {
+                right: -35px;
+                width: 35px;
+            }
+        }
+
+    }
+
+    // responsive
+    @media only screen and (max-width: $media_query_smp) {
+        --btn-font-size: 105%;
+
+        width: auto;
+        height: auto;
+
+        span {
+            padding: 0 50px;
+        }
+    }
+}
+

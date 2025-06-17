@@ -1,0 +1,7 @@
+/*! Fancyapps 5.0.36 */
+
+/* Version  : 5.0.36
+ * Github   : https://github.com/fancyapps/ui/tree/main/dist/carousel
+ * CDN      : https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/carousel/carousel.autoplay.css
+ */
+.f-progress{position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:0;transition-property:transform;transition-timing-function:linear;background:var(--f-progress-color, var(--f-carousel-theme-color, #0091ff));z-index:30;user-select:none;pointer-events:none}

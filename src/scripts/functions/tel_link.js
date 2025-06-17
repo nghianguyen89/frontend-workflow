@@ -2,11 +2,10 @@
 /* set tel link for text-tel when mobile */
 (function ($) {
 
-    var ua = navigator.userAgent;
     if (
         is_smp ||
-        MobileEsp.DetectIos() || 
-        MobileEsp.DetectAndroid() || 
+        MobileEsp.DetectIos() ||
+        MobileEsp.DetectAndroid() ||
         MobileEsp.DetectSmartphone()
     ) {
         $('.tel-link img').each(function () {

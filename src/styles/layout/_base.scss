@@ -1,49 +1,8 @@
 @use 'sass:map';
 
-body {
-    color: $text-color-base;
-    font-family: $font-family-base;
-    font-weight: $font-weight-base;
-    font-style: $font-style-base;
-    font-size: $font-size-base;
-    line-height: $line-height-base;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-weight: inherit;
-    line-height: 120%;
-}
-
-h1 {
-    font-size: $h1-font-size;
-}
-
-h2 {
-    font-size: $h2-font-size;
-}
-
-h3 {
-    font-size: $h3-font-size;
-}
-
-h4 {
-    font-size: $h4-font-size;
-}
-
-h5 {
-    font-size: $h5-font-size;
-}
-
-h6 {
-    font-size: $h6-font-size;
-}
-
-/*! CSS : cunit-square-css-reset !*/
+/*
+* html tag reset
+*/
 html {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -53,85 +12,131 @@ html {
 *,
 :after,
 :before {
-    -webkit-box-sizing: inherit;
-    -moz-box-sizing: inherit;
-    box-sizing: inherit;
-    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     margin: 0;
+    padding: 0;
+}
+
+body {
+    color: var(--cus-text-color-base);
+    font-style: var(--cus-font-style-base);
+    font-weight: var(--cus-font-weight-base);
+    font-size: var(--cus-font-size-base);
+    line-height: var(--cus-line-height-base);
+    font-family: var(--cus-font-family-base);
 }
 
 nav,
-ul {
+ul,
+li {
     list-style: none;
 }
 
 img {
-    border: 0;
     display: block;
-    height: auto;
     margin: 0 auto;
+    border: 0;
     width: auto;
     max-width: 100%;
+    height: auto;
     object-fit: cover;
-    // vertical-align: middle;
 }
 
 a {
+    outline: 0;
     color: inherit;
     text-decoration: none;
-    outline: 0;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
-a:hover {
-    text-decoration: none;
-}
-
-input,
-select,
-textarea {
-    padding: 6px 0;
-    width: auto;
-    text-indent: 1em;
-    position: relative;
+input[type="checkbox"],
+input[type="radio"] {
     border: 1px solid #b3b3b3;
     border-radius: 0;
     background-color: #fff;
 }
 
-area {
-    outline: 0;
+input[type='submit']:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+    position: relative;
+    border: 1px solid #b3b3b3;
+    border-radius: 0;
+    background-color: #fff;
+    padding: 6px 0;
+    width: auto;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    text-indent: 1em;
 }
 
 textarea {
     resize: none;
 }
 
-input,
-textarea {
-    color: inherit;
-    font-size: inherit;
-    font-family: inherit;
-}
-
-input[type='submit']:hover {
-    cursor: pointer;
-    opacity: 0.8;
+area {
+    outline: 0;
 }
 
 table {
-    table-layout: fixed;
-    width: 100%;
-    max-width: $container-default;
     margin: 0 auto;
+    width: 100%;
+    max-width: var(--cus-container-default);
+    table-layout: fixed;
 }
 
 table,
 td,
 th {
+    vertical-align: top;
     border-collapse: collapse;
     border-spacing: 0;
+    font-weight: var(--cus-font-weight-base);
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    font-weight: var(--cus-font-weight-title);
+    line-height: 120%;
+    font-family: var(--cus-font-family-title);
+}
+
+/*
+* smooth effect
+*/
+a,
+button,
+input {
+    -webkit-transition: var(--cus-transition-speed);
+    transition: var(--cus-transition-speed);
+}
+
+#outside {
+    overflow-x: hidden;
+}
+
+/*
+* common class
+*/
 .pc {
     display: inline-block;
 }
@@ -149,22 +154,39 @@ th {
     cursor: default;
 }
 
-/*! smooth effect !*/
-a,
-button,
-input {
-    -webkit-transition: 0.5s;
-    transition: 0.5s;
-}
 
-@media only screen and (max-width: map.get($grid-breakpoints, 'md')) {
-    body {
-        font-size: $font-size-smp-base;
-        line-height: $line-height-sm;
+
+@media only screen and (max-width: map.get($grid-breakpoints, 'smp')) {
+
+    /*
+    * html tag reset
+    */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-size: inherit;
+        line-height: inherit;
     }
 
+    a,
+    button,
+    input {
+        -webkit-transition: none;
+        transition: none;
+    }
+
+    /*
+    * common class
+    */
     .pc {
         display: none;
+    }
+
+    html.pc {
+        display: block;
     }
 
     .smp {
