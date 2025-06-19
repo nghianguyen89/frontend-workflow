@@ -37,9 +37,9 @@
         "gulp5-sass-plugin": "^2.0.4",
         "imagemin-mozjpeg": "^10.0.0",
         "imagemin-pngquant": "^10.0.0",
-        "postcss": "^8.5.4",
-        "pump": "^3.0.2",
-        "sass": "^1.89.1"
+        "postcss": "^8.5.6",
+        "pump": "^3.0.3",
+        "sass": "^1.89.2"
     },
     "browserslist": [
         "last 1 version",

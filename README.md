@@ -1,56 +1,76 @@
-# Frontend-workflow with Gulp task v4
+# Frontend Workflow với Gulp v5
 
-## Nếu máy chưa cài Gulp, cài Gulp (4.x) lần đầu.
+## 1. Cài đặt PNPM và Gulp
 
-> `npm install gulp -g`
+Khuyến khích sử dụng `pnpm` thay cho `npm` để tăng tốc độ và tiết kiệm dung lượng.
 
-## Cài đặt project lần đầu
+Cài đặt toàn cục:
+```sh
+npm install -g pnpm gulp-cli
+```
 
-> `npm install`
->
-> - Chỉ cần chạy lần đầu, những lần sau không cần chạy lại. Nếu package.json có update package mới thì mới chạy lại để cài bổ sung.
+Nếu gặp lỗi không nhận diện được `gulp`, hãy chạy lại lệnh trên để cài đặt `gulp-cli`.
 
-## Chạy project
+---
 
-> `npm start`
->
-> - Lệnh này sẽ build source từ `./src/` -> `./build/`, sau khi build thành công nó sẽ chạy server http://localhost:3000/ là ta có thể dev được rồi.  
-> - Lúc này biến môi trường là `dev`
+## 2. Cài đặt project
 
-### Nếu không cần build lại source (tiết kiệm thời gian chờ), chỉ cần chạy server để dev thì chạy lệnh:
+Chạy lệnh sau để cài đặt các package cần thiết:
+```sh
+pnpm install
+```
+Chỉ cần chạy khi mới clone hoặc khi có cập nhật trong `package.json`.
 
-> `npm run dev`  
-> - Lúc này biến môi trường là `dev`
+---
 
-## Build code cho môi trường chính thức
+## 3. Chạy project
 
-> `npm run build`
-> >
-> - Lệnh này sẽ build source, minify css/js, tối ưu images giúp code gọn nhất để đưa khách hàng.  
-> - Lúc này biến môi trường là `production`
+Khởi động server dev:
+```sh
+pnpm start
+```
+- Source sẽ được build từ `./src/` sang `./build/`.
+- Server chạy tại [http://localhost:4200/](http://localhost:4200/).
+- Môi trường: `dev`.
 
-### ***Chú ý :***
+Nếu chỉ cần chạy server (không build lại source):
+```sh
+pnpm dev
+```
 
-> - Toàn bộ dữ liệu trong `./src/assets/` sẽ ko được tối ưu khi build (trừ `./images/`), nó sẽ copy toàn bộ sang `./build/html/assets/`
-> - Không thao tác gì trong thư mục `./build/`, vì khi chạy lệnh `npm start` hay `npm run build` thì thư mục sẽ bị xóa để build code mới.
-> - Khi commit code lên `svn/git` thì không commit code trong thư mục `./build`
-> - Khi nhúng Wordpress, sử dụng file css `/build/html/assets/css/wordpress-style.min.css` (đã tự động đổi đường dẫn image local sang đường dẫn images của WP)
+---
 
+## 4. Build cho môi trường production
+
+Build và tối ưu code:
+```sh
+pnpm build
+```
+- Minify CSS/JS, tối ưu hình ảnh.
+- Môi trường: `prod`.
+
+---
+
+## Lưu ý
+
+- Dữ liệu trong `./src/assets/` (trừ `images/`) sẽ được copy sang `./build/html/assets/` mà không tối ưu.
+- Không chỉnh sửa hoặc commit code trong thư mục `./build/`.
+- Khi dùng cho Wordpress, sử dụng file CSS: `/build/html/assets/css/wordpress-style.min.css`.
+
+---
 
 ## Cấu trúc thư mục
 
-> **`.vscode/`**  
-> |---- `settings.json` : cấu hình vscode của project  
-> **`build/`**  
-> |---- **`html/`**  : chứa code build từ `src/`  
-> **`gulpfile.js/`**  
-> |---- `configs.js` : cấu hình Gulp  
-> |---- `index.js` : khai báo task  
-> |---- `*.js` : toàn bộ module task của Gulp  
-> **`src/`**  
-> |---- **`assets/`**  
-> |-------- **`images/`** : khi chạy lệnh `npm run build` hoặc lệnh có tham số môi trường khác `--dev` thì toàn bộ images trong thư mục này sẽ được tối ưu.   
-> |-------- **`plugins/`** : toàn bộ plugin sử dụng để trong thư mục này  
-> |---- **`scripts/`** : js files  
-> |---- **`styles/`** : scss files  
-> |---- **`views/`** : pug files  
+```
+.vscode/           # Cấu hình VSCode cho project
+build/html/        # Code đã build từ src/
+gulp-task/         # Các task module của gulp
+src/
+  assets/
+    images/        # Ảnh sẽ được tối ưu khi build production
+    plugins/       # Các plugin sử dụng
+  scripts/         # JS files
+  styles/          # SCSS files
+  views/           # Pug files
+gulpfile.js        # Cấu hình gulp
+```
