@@ -8,10 +8,10 @@ function get_anchor(t) {
     // scroll to id page
     if (anchor_point.search('#') != -1) {
         var a_target = '#' + anchor_point.split('#')[1];
-        var headerH = jQuery('#header').length > 0 ? jQuery('#header').height() : 0;
+        var __headerH = jQuery('#__header').length > 0 ? jQuery('#__header').height() : 0;
         setTimeout(function () {
             jQuery('html, body').animate({
-                scrollTop: jQuery(a_target).offset().top - headerH - 20
+                scrollTop: jQuery(a_target).offset().top - __headerH - 20
             }, 500);
         }, 500);
     }
@@ -37,10 +37,10 @@ anchor_link.on('click', function (e) {
 //     var anchor_point = window.location.href;
 //     if (anchor_point.search('#') != -1) {
 //         var a_target = '#' + anchor_point.split('#')[1];
-//         var headerH = jQuery('#header').length > 0 ? jQuery('#header').height() : 0;
+//         var __headerH = jQuery('#__header').length > 0 ? jQuery('#__header').height() : 0;
 //         setTimeout(function () {
 //             jQuery('html, body').animate({
-//                 scrollTop: jQuery(a_target).offset().top - headerH - 20
+//                 scrollTop: jQuery(a_target).offset().top - __headerH - 20
 //             }, 500);
 //         }, 500);
 //     }
@@ -49,11 +49,11 @@ anchor_link.on('click', function (e) {
 //         jQuery('.scrollTo').each(function () {
 //             jQuery(this).on('click', function (event) {
 //                 event.preventDefault();
-//                 var headerH = jQuery('#header').length > 0 ? jQuery('#header').height() : 0;
+//                 var __headerH = jQuery('#__header').length > 0 ? jQuery('#__header').height() : 0;
 //                 var target = jQuery(this).attr('href');
 //                 if (jQuery(target).length > 0) {
 //                     jQuery('html, body').animate({
-//                         scrollTop: jQuery(target).offset().top - headerH - 20
+//                         scrollTop: jQuery(target).offset().top - __headerH - 20
 //                     }, 500);
 //                 }
 //             });

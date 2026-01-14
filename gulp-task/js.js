@@ -9,9 +9,12 @@
 const configs = require('./_configs_');
 
 /* Packages */
-const yargs = require('yargs/yargs');
-const { hideBin } = require('yargs/helpers');
-const argv = yargs(hideBin(process.argv)).argv;
+let argv = {};
+(async () => {
+    const yargsModule = await import('yargs/yargs');
+    const { hideBin } = await import('yargs/helpers');
+    argv = yargsModule.default(hideBin(process.argv)).argv;
+})();
 const { src, dest } = require('gulp');
 const $ = require('gulp-load-plugins')();
 const pump = require('pump');
@@ -48,9 +51,9 @@ exports.build_js = async function build_js() {
                         reject(error);
                     }
                 }),
-                // $.babel({
-                //     presets: ['@babel/env']
-                // }),
+                $.babel({
+                    presets: ['@babel/env']
+                }),
                 $.concat('bundle.js', { newLine: ';' }),
                 $.if(argv.prod, $.uglify()),
                 $.rename({ suffix: '.min' }),

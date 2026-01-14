@@ -9,9 +9,12 @@
 const configs = require('./_configs_');
 
 /* Packages */
-const yargs = require('yargs/yargs');
-const { hideBin } = require('yargs/helpers');
-const argv = yargs(hideBin(process.argv)).argv;
+let argv = {};
+(async () => {
+    const yargsModule = await import('yargs/yargs');
+    const { hideBin } = await import('yargs/helpers');
+    argv = yargsModule.default(hideBin(process.argv)).argv;
+})();
 const { src, dest } = require('gulp');
 const { sass } = require('gulp5-sass-plugin');
 const $ = require('gulp-load-plugins')({

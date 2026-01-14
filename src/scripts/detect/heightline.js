@@ -150,8 +150,8 @@ function _heightline(settings) {
                     if (_number == 0) {
                         if (
                             _device == 'both' ||
-                            (_device == 'pc' && viewportW > viewportSMP) ||
-                            (_device == 'smp' && viewportW <= viewportSMP)
+                            (_device == 'pc' && __viewportW > __viewportSMP) ||
+                            (_device == 'smp' && __viewportW <= __viewportSMP)
                         ) {
                             // set height
                             jQuery(_item).removeClass(function (index, css) {
@@ -186,8 +186,8 @@ function _heightline(settings) {
                         for (var i = 1; i <= maxRow; i++) {
                             if (
                                 _device == 'both' ||
-                                (_device == 'pc' && viewportW > viewportSMP) ||
-                                (_device == 'smp' && viewportW <= viewportSMP)
+                                (_device == 'pc' && __viewportW > __viewportSMP) ||
+                                (_device == 'smp' && __viewportW <= __viewportSMP)
                             ) {
                                 jQuery('.' + id_hl + '-' + i).removeClass(function (index, css) {
                                     return (css.match(/\_hl_\S+/g) || []).join(' ');

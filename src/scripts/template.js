@@ -1,31 +1,31 @@
 jQuery(document).ready(function () {
-    // Ensure _window is defined
-    const _window = window._window || jQuery(window);
-    let viewportW = _window.width();
-    let viewportH = _window.height();
+    // Ensure __window is defined
+    const __window = window.__window || jQuery(window);
+    let __viewportW = __window.width();
+    let __viewportH = __window.height();
 
     // smartresize when resize screen
-    if (typeof _window.smartresize === 'function') {
-        _window.smartresize(function () {
-            viewportW = _window.width();
-            viewportH = _window.height();
+    if (typeof __window.smartresize === 'function') {
+        __window.smartresize(function () {
+            __viewportW = __window.width();
+            __viewportH = __window.height();
         });
     } else {
-        _window.on('resize', function () {
-            viewportW = _window.width();
-            viewportH = _window.height();
+        __window.on('resize', function () {
+            __viewportW = __window.width();
+            __viewportH = __window.height();
         });
     }
 
     // menu smp
-    const header_scroll_class = '_small';
+    const __header_scroll_class = '_small';
 
-    // header small
-    _window.on('scroll', function () {
-        if (_window.scrollTop() > 100) {
-            jQuery('#header').addClass(header_scroll_class);
+    // __header small
+    __window.on('scroll', function () {
+        if (__window.scrollTop() > 100) {
+            jQuery('#__header').addClass(__header_scroll_class);
         } else {
-            jQuery('#header').removeClass(header_scroll_class);
+            jQuery('#__header').removeClass(__header_scroll_class);
         }
     });
 
@@ -35,7 +35,7 @@ jQuery(document).ready(function () {
             imagePath: (typeof path_media !== 'undefined' ? path_media : '') + 'icons',
             arrowType: 'arrow-l',
             margin: 2,
-            size: (typeof is_smp !== 'undefined' && is_smp) ? 2 : 4,
+            size: (typeof __is_smp !== 'undefined' && __is_smp) ? 2 : 4,
             backgroundColor: '#b3dfc8',
             linkClasses: [' scroll_totop'],
             mobileHide: 0
@@ -46,8 +46,8 @@ jQuery(document).ready(function () {
     const smp_zoom = jQuery('.smp_zoom');
     if (
         smp_zoom.length > 0 &&
-        typeof viewportSMP !== 'undefined' &&
-        viewportW <= viewportSMP
+        typeof __viewportSMP !== 'undefined' &&
+        __viewportW <= __viewportSMP
     ) {
         smp_zoom.each(function () {
             const $img = jQuery(this);
@@ -78,7 +78,7 @@ jQuery(document).ready(function () {
     setTimeout(function () {
         const main_visual = jQuery('.main_visualbox__banner');
         if (main_visual.length > 0) {
-            const mainvisual_image = (typeof is_smp !== 'undefined' && is_smp)
+            const mainvisual_image = (typeof __is_smp !== 'undefined' && __is_smp)
                 ? main_visual.data('imgsmp')
                 : main_visual.data('imgpc');
             if (mainvisual_image) {

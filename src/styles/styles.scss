@@ -7,7 +7,6 @@
 !*/
 
 /* components */
-// @use 'components/hamburgers/hamburgers';
 @use 'components/title';
 @use 'components/button';
 
@@ -20,8 +19,8 @@
 
 
 /* form */
-// @use 'layout/form';
-// @use 'pages/contact';
+@use 'layout/form';
+@use 'pages/contact';
 
 
 /* pages */
