@@ -4,7 +4,7 @@
  * Post type : post
  * Page : トップページ 
  * URL : /
- * Shortcode : [GET_LIST posts_per_page="3" template="template-list/post/topics-top.php" pagination="false" posts_per_page="3"]
+ * Shortcode : [GET_LIST posts_per_page="3" template="template-list/post/toppage.php" pagination="false"]
  **/
 ?>
 

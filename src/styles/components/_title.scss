@@ -1,9 +1,8 @@
 @use 'sass:map';
-@use '../helpers/variables';
-@use '../helpers/mixins';
+@use '../config' as *;
+@use '../helpers' as *;
 
 
-
-@media only screen and (max-width: variables.$media_query_smp) {
+@media only screen and (max-width: $media_query_smp) {
     
 }

@@ -23,16 +23,16 @@ jQuery(document).ready(function () {
     // __header small
     __window.on('scroll', function () {
         if (__window.scrollTop() > 100) {
-            jQuery('#__header').addClass(__header_scroll_class);
+            jQuery('#header').addClass(__header_scroll_class);
         } else {
-            jQuery('#__header').removeClass(__header_scroll_class);
+            jQuery('#header').removeClass(__header_scroll_class);
         }
     });
 
     // scroll to top
     if (typeof jQuery.fn.toTopButton === 'function') {
         jQuery('body').toTopButton({
-            imagePath: (typeof path_media !== 'undefined' ? path_media : '') + 'icons',
+            imagePath: (typeof __path_media !== 'undefined' ? __path_media : '') + 'icons',
             arrowType: 'arrow-l',
             margin: 2,
             size: (typeof __is_smp !== 'undefined' && __is_smp) ? 2 : 4,

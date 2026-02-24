@@ -1,6 +1,6 @@
 @use 'sass:map';
-@use '../helpers/variables';
-@use '../helpers/mixins';
+@use '../config' as *;
+@use '../styles/helpers' as *;
 
 .datepicker_icon {
     position: relative;
@@ -55,7 +55,7 @@
                     font-weight: 700;
                     font-size: 60px;
                     line-height: 100%;
-                    @include mixins.background($image: 'icon-tel4.png',
+                    @include background($image: 'icon-tel4.png',
                         $position: left top 12px,
                         $repeat: no-repeat);
                 }
@@ -180,7 +180,7 @@
                 min-width: 85px;
 
                 &.last {
-                    // margin-bottom: 0;
+                    margin-bottom: 0;
                 }
 
                 &-label::before {
@@ -208,7 +208,7 @@
                 }
             }
 
-            @media only screen and (min-width: variables.$media_query_pc_only) {
+            @media only screen and (min-width: $media_query_pc_only) {
                 [class*="_w"] {
                     max-width: 100%;
                 }
@@ -499,7 +499,7 @@
                         max-width: 260px;
                     }
 
-                    @media only screen and (max-width: variables.$media_query_smp) {
+                    @media only screen and (max-width: $media_query_smp) {
                         flex-wrap: wrap;
 
                         li {
@@ -567,7 +567,7 @@
         margin-top: 20px;
 
         a {
-            @include mixins.a-hover-line();
+            @include a-hover-line();
         }
     }
 
@@ -580,7 +580,7 @@
             color: #1F8657;
         }
 
-        @media only screen and (max-width: variables.$media_query_smp) {
+        @media only screen and (max-width: $media_query_smp) {
             margin: 0 auto;
             border: 2px solid #ccc;
             padding: 40px 5%;
@@ -590,7 +590,7 @@
 }
 
 
-@media only screen and (max-width: variables.$media_query_smp) {
+@media only screen and (max-width: $media_query_smp) {
     .form_page {
 
         .wpcf7-form {

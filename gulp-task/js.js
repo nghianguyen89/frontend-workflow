@@ -51,6 +51,7 @@ exports.build_js = async function build_js() {
                         reject(error);
                     }
                 }),
+                $.order(script_src, { base: dir_src }),
                 $.babel({
                     presets: ['@babel/env']
                 }),
@@ -79,7 +80,7 @@ exports.build_js = async function build_js() {
                     script_html + 'bundle.min.js',
                     script_html + 'bundle.min.js.map'
                 ]),
-                dest(dir_src + '/wp_themes/assets/js/')
+                dest(dir_src + '/_cms_/' + configs.project_name + '/assets/js/')
             ],
             (err) => {
                 if (err) {

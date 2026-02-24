@@ -1,0 +1,15 @@
+@use 'sass:map';
+@use '../config' as *;
+@use '../styles/helpers' as *;
+
+.header {
+
+}
+
+
+
+@media only screen and (max-width: $media_query_smp) {
+    .header {
+        
+    }
+}

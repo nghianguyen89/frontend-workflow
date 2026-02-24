@@ -1,0 +1,30 @@
+@use 'sass:meta';
+@use 'sass:map';
+@use 'sass:math';
+@use 'config' as *;
+
+
+/*
+ * assets($name)
+ */
+@function assets($name) {
+    @return url('#{$image_url}/#{$name}');
+}
+
+/*
+ * rem($px)
+ */
+@function rem($px) {
+    @return math.div($px, 16) * 1rem;
+}
+
+/*
+ * fluid($min, $max)
+ */
+@function fluid($min, $max) {
+    @return clamp(
+        #{rem($min)},
+        #{math.div($max, 1920) * 100}vw,
+        #{rem($max)}
+    );
+}

@@ -785,8 +785,8 @@ function twentytwenty_get_elements_array() {
 
 /********************************************************************
  ********************************************************************
- ***	Theme  		 : 株式会社C-UNIT SQUARE                       ***
- ***	Author 		 : 株式会社C-UNIT SQUARE                       ***
+ ***	Theme  		 : 株式会社C-UNIT SQUARE                    ***
+ ***	Author 		 : 株式会社C-UNIT SQUARE                    ***
  ***	Description  : Custom function for this theme	          ***
  ********************************************************************
  ********************************************************************/
@@ -837,8 +837,9 @@ function mytheme_scripts_styles() {
     /* files version */
     $version = $env_dev == false ? $version_official : $version_dev->format('U');
     /* styles */
-    wp_enqueue_style($project_name . '-plugins', get_template_directory_uri() . '/assets/css/wordpress-styles.min.css', array(), $version);
-    wp_enqueue_style($project_name . '-customize', get_template_directory_uri() . '/assets/css/theme_customize.css', array(), $version);
+    wp_enqueue_style( $project_name . '-plugins', get_template_directory_uri() . '/assets/css/wordpress-plugins.min.css', array(), $version );
+    wp_enqueue_style( $project_name . '-styles', get_template_directory_uri() . '/assets/css/wordpress-styles.min.css', array(), $version );
+    wp_enqueue_style( $project_name . '-customize', get_template_directory_uri() . '/assets/css/theme_customize.css', array(), $version );
     /* scripts | global */
     global_script();
     /* scripts */
@@ -950,8 +951,8 @@ function custom_pagination($numpages = '', $pagerange = '', $paged = '', $show_f
         'end_size'        => 1,
         'mid_size'        => $pagerange,
         'prev_next'       => true,
-        'prev_text'       => __('<‹'),
-        'next_text'       => __('›>'),
+        'prev_text'       => __('‹'),
+        'next_text'       => __('›'),
         'type'            => 'plain',
         'add_args'        => false,
         'add_fragment'    => '',
@@ -959,15 +960,9 @@ function custom_pagination($numpages = '', $pagerange = '', $paged = '', $show_f
         'after_page_number'  => ''
     ));
 
-    if ($paginate_links) {
-        echo "<div class='page-container' data='" . $paged . "'>";
-        if ($paged == 1)
-            echo ('<span class="page-numbers prev">' . __('‹') . '</span>');
-
-        echo $paginate_links;
-
-        if ($paged == $numpages)
-            echo ('<span class="page-numbers next">' . __('›') . '</span>');
+    if ( $paginate_links ) {
+        echo "<div class='page-container' data='". $paged . "'>";
+            echo $paginate_links;
         echo "</div>";
     }
 }
@@ -1126,7 +1121,7 @@ add_action('wpcf7_init', 'wpcf7_add_form_tag_radio_required');
 function wpcf7_add_form_tag_radio_required() {
     wpcf7_add_form_tag(array('radio*'), 'wpcf7_checkbox_form_tag_handler', true);
 }
-add_filter('wpcf7_validate_radio*', 'wpcf7_checkbox_validation_filter', 10, 2);
+// add_filter( 'wpcf7_validate_radio*', 'wpcf7_checkbox_validation_filter', 10, 2 );
 
 // thumbnail自動表示 ------------------------------------------------------------------------------//
 function get_first_image_url($id = '', $blog = '') {
@@ -1236,8 +1231,8 @@ function get_block($atts) {
     );
 
     ob_start();
-    if (file_exists(locate_template($block_file))) {
-        include(locate_template($block_file));
+    if (file_exists(locate_template($atts['name']))) {
+        include(locate_template($atts['name']));
     }
     return ob_get_clean();
 }

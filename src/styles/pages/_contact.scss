@@ -1,6 +1,6 @@
 @use 'sass:map';
-@use '../helpers/variables';
-@use '../helpers/mixins';
+@use '../config' as *;
+@use '../styles/helpers' as *;
 
 .contact {
 
@@ -8,7 +8,7 @@
 
 
 
-@media only screen and (max-width: variables.$media_query_smp) {
+@media only screen and (max-width: $media_query_smp) {
     .contact {
         
     }

@@ -12,6 +12,8 @@ get_header(); ?>
 
             $main_visual = !empty( get_field( 'main_visual' ) ) ? get_field( 'main_visual' ) : '';
             if ( !is_front_page() && !empty( get_the_content() ) ) {
+
+                /* main visual */
                 $main_visual_banner = $main_visual['banner'];
                 $main_visual_title = $main_visual['title'];
                 echo '<div class="main_visual" data-imgpc="' . $main_visual_banner['pc'] . '" data-imgsmp="' . $main_visual_banner['smp'] . '">';
@@ -20,6 +22,16 @@ get_header(); ?>
                         echo '<span class="en">' . $main_visual_title['en'] . '</span>';
                     echo '</h2>';
                 echo '</div>';
+
+                /* breadcrumb */
+                if( function_exists('bcn_display') ) {
+                    echo '<div id="path">';
+                        echo '<div class="container">';
+                            bcn_display();
+                        echo '</div>';
+                    echo '</div>';
+                }
+
             }
         
             if( !empty( get_the_content() ) ) {

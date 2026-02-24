@@ -1,7 +1,7 @@
-/*! Fancyapps 5.0.36 */
+/*! Fancyapps 6.0.34 */
 
-/* Version  : 5.0.36
+/* Version  : 6.0.34
  * Github   : https://github.com/fancyapps/ui/tree/main/dist/carousel
- * CDN      : https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/carousel/carousel.autoplay.css
+ * CDN      : https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.autoplay.css
  */
-.f-progress{position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:0;transition-property:transform;transition-timing-function:linear;background:var(--f-progress-color, var(--f-carousel-theme-color, #0091ff));z-index:30;user-select:none;pointer-events:none}
+:root{--f-progressbar-height: 3px;--f-progressbar-color: var(--f-carousel-theme-color, #575ad6);--f-progressbar-opacity: 1;--f-progressbar-z-index: 30}.f-progressbar{position:absolute;top:0;right:0;left:0;transform:scaleX(0);transform-origin:0;opacity:var(--f-progressbar-opacity);z-index:var(--f-progressbar-z-index);animation-timing-function:linear;animation-play-state:running;animation-name:f-progressbar;background:var(--f-progressbar-color);height:var(--f-progressbar-height);pointer-events:none;user-select:none}.f-progressbar:empty{display:block}button>.f-progressbar{--f-progressbar-height: 100%;--f-progressbar-opacity: .2}@keyframes f-progressbar{0%{transform:scaleX(0)}to{transform:scaleX(1)}}

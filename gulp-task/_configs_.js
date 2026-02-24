@@ -1,7 +1,7 @@
 'use strict';
 
-const project_name = 'c-unitsquare';
-const project_cms = ''; // lancelot | wordpress | ec-cube |  default ('')
+const project_name = 'wp_themes';
+const project_cms = 'wordpress'; // lancelot | wordpress | ec-cube |  default ('')
 
 /* assets directory depend on project CMS */
 let dir_css, dir_js, dir_image;
@@ -13,8 +13,8 @@ switch (project_cms) {
         dir_image = 'lancelot/common_files/images/public';
         break;
     case 'wordpress':
-        dir_css = `themes/${project_name}/assets/css`;
-        dir_js = `themes/${project_name}/assets/js`;
+        dir_css = `_cms_/${project_name}/assets/css`;
+        dir_js = `_cms_/${project_name}/assets/js`;
         dir_image = 'uploads';
         break;
     default:
@@ -25,8 +25,9 @@ switch (project_cms) {
 
 
 module.exports = {
+    project_name: project_name,
     source_dir: 'src',
-    dist_dir: 'build',
+    dist_dir: 'dist',
     assets_dir: 'assets',
     dist: {
         css: dir_css,
@@ -36,7 +37,7 @@ module.exports = {
     browser_sync: {
         port: 4200,
         browsers: 'firefox', // ['firefox', 'chrome', 'edge']
-        use_https: true,
+        use_https: false,
         ssl_cert: {
             key: 'C:/xampp/apache/conf/ssl.key/localhost.key',
             cert: 'C:/xampp/apache/conf/ssl.pem/localhost.pem',

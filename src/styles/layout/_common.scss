@@ -1,11 +1,11 @@
 @use 'sass:map';
-@use '../helpers/variables';
-@use '../helpers/mixins';
+@use '../config' as *;
+@use '../styles/helpers' as *;
 
 /*
 * container
 */
-.container-default {
+%container-default {
     position: relative;
     clear: both;
     z-index: 1;
@@ -14,50 +14,110 @@
     width: var(--cus-container-default, 100%);
     max-width: var(--cus-container-default, 100%);
 
-    @media only screen and (max-width: variables.$media_query_smp) {
+    @media only screen and (max-width: $media_query_smp) {
         --cus-container-default-padding: 0;
-        width: var(--cus-container-default-smp, 100%);
+        width: var(--cus-container-default-smp, 95%);
     }
 }
 
-.container-full {
-    @extend .container-default;
-    --cus-container-default: 100%;
-    --cus-container-default-smp: 100%;
-}
-
 .container {
-    @extend .container-default;
-    padding-right: var(--cus-container-default-padding);
-    padding-left: var(--cus-container-default-padding);
+    @extend %container-default;
+
+    &-full {
+        @extend %container-default;
+        --cus-container-default: 100%;
+        --cus-container-default-smp: 100%;
+    }
+
+    &-1300 {
+        --cus-container-default: 1300px;
+        @extend %container-default;
+    }
 }
 
-.container-1400 {
-    @extend .container-default;
-    --cus-container-default: 1400px;
-    --cus-container-default-smp: 95%;
-}
 
 /*
 * wrapper
 */
-
 #wrapper {
-    padding-top: 100px;
+    padding-top: 0;
 
     .home-page & {
         padding-top: 0;
-        padding-bottom: 50px;
     }
 
-    @media only screen and (max-width: variables.$media_query_smp) {
-        padding-top: 50px;
+    @media only screen and (max-width: $media_query_smp) {
+        padding-top: 0;
     }
 }
 
 a.to-top-button {
     bottom: 60px !important;
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.67);
+}
+
+/*
+* main_visual
+*/
+.main_visual {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 305px;
+
+    &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        width: 100%;
+        height: 100%;
+        content: '';
+    }
+
+    h2 {
+        position: relative;
+        z-index: 1;
+        color: #fff;
+        font-weight: 500;
+        text-align: center;
+
+        ._jp {
+            display: block;
+            margin-bottom: 3px;
+            font-size: fluid(40, 50);
+            line-height: 100%;
+        }
+
+        ._en {
+            display: block;
+            font-size: rem(15);
+            letter-spacing: 1.5px;
+        }
+    }
+
+    @media only screen and (max-width: $media_query_smp) {
+        margin-bottom: 60px;
+        height: calc(100vw * 0.77);
+        max-height: 250px;
+    }
+}
+
+/*
+* path
+*/
+#path {
+    margin-bottom: 70px;
+    font-size: rem(13);
+
+    @media only screen and (max-width: $media_query_smp) {
+        display: none;
+    }
 }
 
 /*
@@ -101,6 +161,7 @@ a.to-top-button {
             text-decoration: none;
 
             &.current,
+            &:hover:not(.dots),
             &:hover {
                 --pager-color: #0A7EBA;
                 color: #fff;
@@ -132,7 +193,7 @@ a.to-top-button {
     }
 
 
-    @media only screen and (max-width: variables.$media_query_smp) {
+    @media only screen and (max-width: $media_query_smp) {
         margin: 40px auto 80px;
         width: 100%;
 

@@ -1,8 +1,7 @@
 @use 'sass:meta';
 @use 'sass:map';
-@use '../helpers/variables';
-@use '../helpers/mixins';
-@use '../helpers/fonts';
+@use '../config' as *;
+@use '../helpers' as *;
 
 .btn {
     // varible default
@@ -55,7 +54,7 @@
     }
 
     // responsive
-    @media only screen and (max-width: map.get(variables.$grid-breakpoints, 'smp')) {
+    @media only screen and (max-width: map.get($grid-breakpoints, 'smp')) {
         --btn-font-size: 100%;
 
         min-width: 200px;

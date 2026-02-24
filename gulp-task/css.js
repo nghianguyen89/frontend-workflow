@@ -15,13 +15,10 @@ let argv = {};
     const { hideBin } = await import('yargs/helpers');
     argv = yargsModule.default(hideBin(process.argv)).argv;
 })();
-const { src, dest } = require('gulp');
+
+const { src, dest, lastRun } = require('gulp');
 const { sass } = require('gulp5-sass-plugin');
-const $ = require('gulp-load-plugins')({
-    rename: {
-        'gulp-concat-css': 'concatCss',
-    },
-});
+const $ = require('gulp-load-plugins')({});
 const pump = require('pump');
 const log = require('fancy-log');
 const cssnano = require('cssnano');
@@ -51,7 +48,7 @@ exports.build_css = async function build_css() {
     // Compile SCSS
     await new Promise((resolve, reject) => {
         pump(
-            src(css_src, { sourcemaps: true }),
+            src(css_src, { sourcemaps: true, since: lastRun(build_css) }),
             $.plumber({
                 errorHandler: function (error) {
                     log(error.toString());
@@ -64,7 +61,8 @@ exports.build_css = async function build_css() {
                 outputStyle: 'expanded',
                 indentWidth: 4,
             }).on('error', sass.logError),
-            $.if(argv.prod, $.postcss([autoprefixer(), cssnano()])),
+            // $.if(argv.prod, $.postcss([autoprefixer(), cssnano()])),
+            $.postcss([autoprefixer(), cssnano()]),
             $.rename({ suffix: '.min' }),
             dest(css_dest, { sourcemaps: '.' }),
             (error) => {
@@ -93,7 +91,7 @@ exports.build_css = async function build_css() {
             }),
             $.replace(media_url_local, media_url_cms),
             $.rename({ prefix: 'wordpress-' }),
-            dest(dir_src + '/wp_themes/assets/css', { sourcemaps: '.' }),
+            dest(dir_src + '/_cms_/' + configs.project_name + '/assets/css', { sourcemaps: '.' }),
             (error) => {
                 if (error) {
                     log(error);

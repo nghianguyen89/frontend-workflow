@@ -1,0 +1,19 @@
+@use 'sass:map';
+
+/*
+ * BREAKPOINT VAR SCSS
+ */
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px,
+    smp: 768px
+) !default;
+
+$media_query_pc_only: map.get($grid-breakpoints, 'smp') + 1;
+$media_query_smp: map.get($grid-breakpoints, 'smp');
+$image_url: '../images';

@@ -1,9 +1,9 @@
 @use 'sass:meta';
 @use 'sass:map';
-@use 'helpers/variables';
+@use 'config' as *;
 
 /*
- * @include mixins.background( $color, $image, $position, $repeat, $size )
+ * @include background( $color, $image, $position, $repeat, $size )
  */
 @mixin background($args...) {
     @each $name, $value in meta.keywords($args) {
@@ -12,7 +12,7 @@
         }
 
         @if $name=='image' {
-            background-image: url('#{variables.$image_url}/#{$value}');
+            background-image: url('#{$image_url}/#{$value}');
         }
 
         @if $name=='position' {
@@ -30,16 +30,16 @@
 }
 
 /*
- * @include mixins.background-image($name)
+ * @include background-image($name)
  */
 @mixin background-image($name) {
-    background-image: url('#{variables.$image_url}/#{$name}');
+    background-image: url('#{$image_url}/#{$name}');
 }
 
 /*
  * @include iframe-absolute( $ratio : 45% )
  */
-@mixin iframe-absolute() {
+@mixin iframe-absolute($ratio : 45%) {
     position: relative;
 
     &::before {
@@ -107,17 +107,8 @@
 }
 
 /*
- * @include font-size( $size )
+ * @include button-modify( ... )
  */
-@mixin font-size($size: $font-size-base) {
-    font-size: $size;
-
-    @media only screen and (max-width: map.get(variables.$grid-breakpoints, 'smp')) {
-        $size-smp: calc($size * 100 / $font-size-base);
-        font-size: #{$size-smp}+'%';
-    }
-}
-
 @mixin button-modify($args...) {
     $local_color: '';
     $local_icon: '';
@@ -156,7 +147,7 @@
 
             &:hover ._ico-r::before,
             &:hover ._ico-l::before {
-                @include mixins.background($image: $value);
+                @include background($image: $value);
             }
         }
 
@@ -167,7 +158,7 @@
 
                 ._ico-r::before,
                 ._ico-l::before {
-                    @include mixins.background($image: $local_icon_hover);
+                    @include background($image: $local_icon_hover);
                 }
 
                 &:hover {
@@ -176,7 +167,7 @@
 
                     ._ico-r::before,
                     ._ico-l::before {
-                        @include mixins.background($image: $local_icon);
+                        @include background($image: $local_icon);
                     }
                 }
             }
@@ -245,4 +236,11 @@
             }
         }
     }
+}
+
+/*
+ * @include mixins_name($var)
+ */
+@mixin mixins_name($var) {
+    
 }

@@ -105,3 +105,17 @@ dist
 
 # SVN
 .svn
+
+# Build files
+plugins.scss
+plugins.css
+plugins.min.css
+wordpress-plugins.css
+wordpress-plugins.css.map
+wordpress-plugins.min.css
+wordpress-plugins.min.css.map
+wordpress-styles.min.css
+wordpress-styles.min.css.map
+
+bundle.min.js
+bundle.min.js.map

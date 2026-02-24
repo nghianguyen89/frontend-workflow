@@ -1,0 +1,182 @@
+@use 'sass:map';
+@use "sass:meta";
+
+
+/*********************************
+ *  Breakpoints configuration
+ *********************************/
+
+$breakpoints: (
+    pc: 1200px,
+    tab: 992px,
+    smp: 768px,
+    sp: 576px
+) !default;
+
+$breakpoint-directions: (
+    pc: min,
+    tab: max,
+    smp: max,
+    sp: max
+) !default;
+
+$default-responsive-device: smp !default;
+
+/*********************************
+ *  Internal helper: 
+ *  get breakpoint value
+ *********************************/
+
+@function bp($device) {
+    @if map.has-key($breakpoints, $device) {
+        @return map.get($breakpoints, $device);
+    }
+
+    @warn "Unknown breakpoint: #{$device}";
+    @return null;
+}
+
+
+/*********************************
+ *  Media query mixin core
+ *********************************/
+/* 
+    Usage:
+        @include mq(smp) { ... }
+        @include mq(pc) { ... }
+        @include mq(smp tab) { ... }
+ */
+
+@mixin mq($devices) {
+    // convert to list if needed
+    @if meta.type-of($devices) != 'list' {
+        $devices: ($devices);
+    }
+
+    @each $device in $devices {
+        $direction: map.get($breakpoint-directions, $device);
+        @if $direction != min {
+            $direction: max;
+        }
+
+        $breakpoint: bp($device);
+        @if $breakpoint != null {
+            @if $direction == min {
+                @media only screen and (min-width: $breakpoint) {
+                    @content;
+                }
+            }
+            @else {
+                @media only screen and (max-width: $breakpoint) {
+                    @content;
+                }
+            }
+        }
+    }
+}
+
+
+/*********************************
+ *  Responsive property helper
+ *********************************/
+/* 
+    Usage:
+        - Default PC & SMP :
+            @include responsive-prop(width, 600px, 100%);
+
+        - PC & Multidevice : 
+            @include responsive-prop(width, 600px, 100%, smp tab);
+ */
+
+@mixin responsive-prop($property, $default-value, $responsive-value, $devices: $default-responsive-device) {
+    #{$property}: $default-value;
+
+    @include mq($devices) {
+        #{$property}: $responsive-value;
+    }
+}
+
+/* 
+    Usage:
+        - Default only SMP :
+            @include responsive-prop-only(width, 100%);
+
+        - Only PC : 
+            @include responsive-prop-only(width, 500px, pc);
+ */
+@mixin responsive-prop-only($property, $value, $devices: $default-responsive-device) {
+    @include mq($devices) {
+        #{$property}: $value;
+    }
+}
+
+
+/*********************************
+ *  Responsive multiple properties helper
+ *********************************/
+/* 
+    Usage:
+        - Default PC & SMP :
+            @include responsive(
+                (
+                    width: 600px,
+                    padding: 20px
+                ),
+                (
+                    width: 100%,
+                    padding: 10px
+                )
+            );
+
+        - PC & Multidevice :
+            @include responsive(
+                (
+                    width: 600px,
+                    padding: 20px
+                ),
+                (
+                    width: 100%,
+                    padding: 10px
+                ),
+                smp tab
+            );
+ */
+
+@mixin responsive($default-styles, $responsive-styles, $devices: $default-responsive-device) {
+    @each $prop, $value in $default-styles {
+        #{$prop}: $value;
+    }
+
+    @include mq($devices) {
+        @each $prop, $value in $responsive-styles {
+            #{$prop}: $value;
+        }
+    }
+}
+
+/* 
+    Usage:
+        - Default only SMP :
+            @include responsive-only(
+                (
+                    width: 100%,
+                    padding: 10px
+                )
+            );
+
+        - Only PC :
+            @include responsive-only(
+                (
+                    width: 600px,
+                    padding: 20px
+                ),
+                pc
+            );
+ */
+@mixin responsive-only($styles, $devices: $default-responsive-device) {
+    @include mq($devices) {
+        @each $prop, $value in $styles {
+            #{$prop}: $value;
+        }
+    }
+}

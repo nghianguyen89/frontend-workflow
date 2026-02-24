@@ -22,9 +22,13 @@ mixin linkto(options)
                 span._txt
                     !=options.text
         else
+            -str_after = ''
+            if options.after
+                -str_after = options.after
+
             a(style=options.style class=options.class href=relativeRoot + options.href target=options.target data-fancybox=options.fancybox data-src=options.data_src data-type=options.data_type data-caption=options.data_caption data=options.data)
                 span._txt
-                    !=options.text
+                    !=options.text + str_after
 
     if options.container 
         !='</' + options.container + '>'
@@ -300,13 +304,16 @@ mixin mainvisual_title(ja, en)
 
 
 //- mainvisual banner
-mixin main_visual(img_pc, img_smp)
-    -image_pc = relativeRoot + 'assets/images/' + img_pc
-    -image_sm = relativeRoot + 'assets/images/' + img_pc
-    if img_smp
-        -image_sm = relativeRoot + 'assets/images/' + img_smp
+mixin main_visual(options)
+    -image_pc = relativeRoot + 'assets/images/' + options.img_pc
+    -image_sm = relativeRoot + 'assets/images/' + options.img_pc
+    if options.img_smp
+        -image_sm = relativeRoot + 'assets/images/' + options.img_smp
 
-    .main_visualbox__banner(data-imgpc= image_pc, data-imgsmp= image_sm)
+    .main_visual(data-imgpc= image_pc, data-imgsmp= image_sm)
+        h2 
+            span._jp= options.text_jp
+            span._en= options.text_en
 
 
 //- breadcrumb
@@ -346,7 +353,7 @@ mixin title(options)
     if options.htag 
         -htag = options.htag
     else
-        -htag = 'h3'
+        -htag = 'h2'
 
     if options.id
         -hid = ' id="' + options.id + '"';
@@ -360,9 +367,9 @@ mixin title(options)
 
     !='<' + htag + hid + hclass + '>'
     if options.ja
-        span(class="ja")= options.ja
+        span(class="ja")!= options.ja
     if options.en
-        span(class="en")= options.en
+        span(class="en")!= options.en
     !='</' + htag + '>'
 
 

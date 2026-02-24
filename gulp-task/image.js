@@ -25,16 +25,11 @@ const dir_src = configs.source_dir;
 const dir_public = configs.dist_dir;
 const image_src = dir_src + '/assets/images/**/*.*';
 const image_dest = dir_public + '/assets/images/';
-let imagemin, mozjpeg, pngquant;
-const start_imagemin = async () => {
-    imagemin = (await import('gulp-imagemin')).default;
-    mozjpeg = (await import('imagemin-mozjpeg')).default;
-    pngquant = (await import('imagemin-pngquant')).default;
-};
+
+const sharp = require('sharp');
 
 /* Task */
 exports.build_image = async function build_image() {
-    await start_imagemin();
 
     // Copy images to public folder
     await new Promise((resolve, reject) => {
@@ -60,39 +55,4 @@ exports.build_image = async function build_image() {
         );
     });
 
-    // Optimize images in production
-    if (argv.prod) {
-        await new Promise((resolve, reject) => {
-            pump(
-                src(image_dest + '/**/*.*'),
-                $.plumber({
-                    errorHandler: function (error) {
-                        log(error.toString());
-                        this.emit('end');
-                        reject(error);
-                    },
-                }),
-                imagemin(
-                    [
-                        pngquant({ quality: [0.7, 0.7] }),
-                        mozjpeg({ quality: 70 }),
-                    ],
-                    {
-                        progressive: true,
-                        verbose: true,
-                    }
-                ),
-                dest(image_dest),
-                (err) => {
-                    if (err) {
-                        log(err);
-                        reject(err);
-                    } else {
-                        log('Image optimization is completed.');
-                        resolve();
-                    }
-                }
-            );
-        });
-    }
 };

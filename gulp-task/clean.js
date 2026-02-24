@@ -21,6 +21,7 @@ const dir_assets = '/' + configs.assets_dir + '/';
 const delete_dir = {
     all: [dir_public + '/**/*', '!.git', '!.svn'],
     html: dir_public + '/**/*.html',
+    plugins: dir_public + dir_assets,
     css: dir_public + dir_assets + 'css/**/*',
     js: dir_public + dir_assets + 'js',
     image: dir_public + dir_assets + 'images/**/*',
@@ -78,9 +79,18 @@ module.exports = {
         cleanEmptyFoldersRecursively(dir_public);
     }),
 
+    clean_plugins: (async () => {
+        /* clean all files inside folder plugins */
+        await Promise.resolve(del).then((obj) => {
+            obj.deleteSync(delete_dir.plugins + 'css/plugins.css');
+            obj.deleteSync(delete_dir.plugins + 'js/plugins.js');
+        });
+        /* clean folder empty */
+        cleanEmptyFoldersRecursively(dir_public);
+    }),
+
     clean_css: (async () => {
         await Promise.resolve(del).then((obj) => {
-            obj.deleteSync(dir_src + '/styles/_plugins.scss');
             obj.deleteSync(delete_dir.css);
         });
         /* clean folder empty */

@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'functions' as *;
 
 :root {
     /*
@@ -12,7 +13,7 @@
     --cus-font-family-base: "Noto Sans JP", sans-serif;
     --cus-font-weight-base: 400;
     --cus-font-style-base: normal;
-    --cus-font-size-base: 15px;
+    --cus-font-size-base: #{rem(15)};
     --cus-font-size-smp-base: 100%;
 
     /*
@@ -37,22 +38,3 @@
     */
     --cus-transition-speed: 0.5s;
 }
-
-
-/*
- * BREAKPOINT VAR SCSS
- */
-
-$grid-breakpoints: (
-    xs: 0,
-    sm: 576px,
-    md: 768px,
-    lg: 992px,
-    xl: 1200px,
-    xxl: 1400px,
-    smp: 768px
-) !default;
-
-$media_query_pc_only: map.get($grid-breakpoints, 'smp') + 1;
-$media_query_smp: map.get($grid-breakpoints, 'smp');
-$image_url: '../images';

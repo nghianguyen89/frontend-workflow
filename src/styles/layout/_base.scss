@@ -1,6 +1,6 @@
 @use 'sass:map';
-@use '../helpers/variables';
-@use '../helpers/mixins';
+@use '../config' as *;
+@use '../styles/helpers' as *;
 
 /*
 * html tag reset
@@ -10,6 +10,7 @@ html {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     scroll-behavior: smooth;
+    font-size: 100%;
 }
 
 *,
@@ -157,7 +158,7 @@ input {
 
 
 
-@media only screen and (max-width: variables.$media_query_smp) {
+@media only screen and (max-width: $media_query_smp) {
 
     /*
     * html tag reset
