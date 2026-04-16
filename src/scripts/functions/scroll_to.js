@@ -1,62 +1,64 @@
-function get_anchor(t) {
-    if (typeof t !== 'undefined') {
-        var target = t.replace('../', '');
+function normalizePath(path) {
+    if (!path) return '/';
+
+    return path
+        .replace(/\/+$/, '') // remove trailing slash
+        .toLowerCase();
+}
+
+function scrollToAnchor(hash) {
+    if (!hash) return;
+
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    const header = document.querySelector('#header');
+    const headerHeight = header ? header.offsetHeight : 0;
+
+    const offset = 20;
+    const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - offset;
+
+    window.scrollTo({
+        top: top,
+        behavior: 'smooth',
+    });
+}
+
+function handleAnchorClick(e) {
+    const link = e.currentTarget;
+    const href = link.getAttribute('href');
+    if (!href || !href.includes('#')) return;
+
+    const url = new URL(href, window.location.origin);
+    const targetPath = normalizePath(url.pathname);
+    const currentPath = normalizePath(window.location.pathname);
+    const hash = url.hash;
+    if (!hash) return;
+
+    if (targetPath !== currentPath) {
+        // khác page -> chuyển trang
+        window.location.href = url.href;
+        return;
     }
+    // cùng page
+    e.preventDefault();
+    scrollToAnchor(hash);
 
-    var anchor_point = typeof target !== 'undefined' ? target : window.location.href;
+    // remove hash khỏi URL
+    history.replaceState(null, '', window.location.pathname);
+}
 
-    // scroll to id page
-    if (anchor_point.search('#') != -1) {
-        var a_target = '#' + anchor_point.split('#')[1];
-        var __headerH = jQuery('#__header').length > 0 ? jQuery('#__header').height() : 0;
+function initAnchorScroll() {
+    // click
+    document.querySelectorAll('a.scrollTo').forEach(function (link) {
+        link.addEventListener('click', handleAnchorClick);
+    });
+    // load page có hash
+    if (window.location.hash) {
         setTimeout(function () {
-            jQuery('html, body').animate({
-                scrollTop: jQuery(a_target).offset().top - __headerH - 20
-            }, 500);
-        }, 500);
+            scrollToAnchor(window.location.hash);
+        }, 100);
     }
 }
 
-/* scroll to anchor */
-get_anchor();
-var anchor_link = jQuery('.scrollTo');
-anchor_link.on('click', function (e) {
-    e.preventDefault();
-    var this_target = jQuery(this).attr('href');
-    var _href = this_target.split('#')[0];
-    if (_href != window.location.href && _href != '')
-        window.location.href = this_target;
-    get_anchor(this_target);
-});
-
-
-
-
-// function scroll_anchor() {
-//     // scroll to id page
-//     var anchor_point = window.location.href;
-//     if (anchor_point.search('#') != -1) {
-//         var a_target = '#' + anchor_point.split('#')[1];
-//         var __headerH = jQuery('#__header').length > 0 ? jQuery('#__header').height() : 0;
-//         setTimeout(function () {
-//             jQuery('html, body').animate({
-//                 scrollTop: jQuery(a_target).offset().top - __headerH - 20
-//             }, 500);
-//         }, 500);
-//     }
-
-//     if (jQuery('.scrollTo').length > 0) {
-//         jQuery('.scrollTo').each(function () {
-//             jQuery(this).on('click', function (event) {
-//                 event.preventDefault();
-//                 var __headerH = jQuery('#__header').length > 0 ? jQuery('#__header').height() : 0;
-//                 var target = jQuery(this).attr('href');
-//                 if (jQuery(target).length > 0) {
-//                     jQuery('html, body').animate({
-//                         scrollTop: jQuery(target).offset().top - __headerH - 20
-//                     }, 500);
-//                 }
-//             });
-//         });
-//     }
-// }
+document.addEventListener('DOMContentLoaded', initAnchorScroll);

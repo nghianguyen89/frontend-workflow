@@ -36,7 +36,7 @@ module.exports = {
     },
     browser_sync: {
         port: 4200,
-        browsers: 'firefox', // ['firefox', 'chrome', 'edge']
+        browsers: ['firefox'], // ['firefox', 'chrome', 'edge']
         use_https: false,
         ssl_cert: {
             key: 'C:/xampp/apache/conf/ssl.key/localhost.key',
