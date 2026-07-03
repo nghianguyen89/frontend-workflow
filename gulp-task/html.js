@@ -9,12 +9,6 @@
 const configs = require('./_configs_');
 
 /* Packages */
-let argv = {};
-(async () => {
-    const yargsModule = await import('yargs/yargs');
-    const { hideBin } = await import('yargs/helpers');
-    argv = yargsModule.default(hideBin(process.argv)).argv;
-})();
 const { src, dest, lastRun } = require('gulp');
 const $ = require('gulp-load-plugins')();
 const pump = require('pump');
@@ -33,15 +27,13 @@ const pug_src = [
 const pug_dest = dir_public;
 const pug_configs = {
     data: {
-        env: argv,
+        env: configs.env,
+        cms: configs.project_cms,
     },
     pretty: true,
     basedir: dir_src + '/views/',
-    verbose: argv.prod ? true : false,
+    verbose: configs.production,
 };
-
-// log(configs.dist_cms.wordpress.css);
-log(configs.dist.css);
 
 /* Task */
 exports.build_html = async function build_html() {
@@ -66,7 +58,7 @@ exports.build_html = async function build_html() {
                 return pug_configs;
             }),
             $.pug({
-                data: pug_configs.data.env,
+                data: pug_configs.data,
                 pretty: pug_configs.pretty,
                 basedir: pug_configs.basedir,
                 verbose: pug_configs.verbose,

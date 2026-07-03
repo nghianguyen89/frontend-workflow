@@ -9,8 +9,7 @@ const { series, parallel } = require('gulp');
 const { default_task } = require('./gulp-task/default');
 const { build_html } = require('./gulp-task/html');
 const { build_plugins } = require('./gulp-task/plugins');
-const { build_css } = require('./gulp-task/css');
-const { build_js } = require('./gulp-task/js');
+const { build_vite } = require('./gulp-task/vite');
 const { build_image } = require('./gulp-task/image');
 const { wf } = require('./gulp-task/watch');
 const assets = require('./gulp-task/assets');
@@ -19,9 +18,9 @@ const del = require('./gulp-task/clean');
 
 /* List of Tasks */
 exports.html = series(del.clean_html, build_html);
-exports.plugins = series(del.clean_plugins, build_plugins);
-exports.css = series(del.clean_css, build_css);
-exports.js = series(del.clean_js, build_js);
+exports.plugins = series(del.clean_plugins, build_plugins, assets.sync_cms);
+exports.css = series(del.clean_vite, build_vite, assets.sync_cms);
+exports.js = series(del.clean_vite, build_vite, assets.sync_cms);
 exports.image = series(del.clean_image, build_image);
 
 exports.clean = del.clean_all;
@@ -36,7 +35,8 @@ exports.dev = parallel(wf, browserSync.start);
 exports.sync = parallel(
     assets.sync_fonts,
     assets.sync_images,
-    assets.sync_plugins
+    assets.sync_plugins,
+    assets.sync_cms
 );
 
 exports.build = series(
@@ -44,8 +44,7 @@ exports.build = series(
     parallel(
         build_html,
         build_plugins,
-        build_css,
-        build_js,
+        build_vite,
         build_image
     ),
     exports.sync

@@ -10,21 +10,22 @@ exports.default_task = async function default_task() {
     log(
         `----------------------------------------------------
 + List variable export for configs:
-    // ├── configs:
-    //     ├── env: ${configs.env} (${typeof configs.env})
-    //     ├── production: ${configs.production} (${typeof configs.production})
-    //     ├── log: (${typeof configs.log})
-    //     ├── onError: (${typeof configs.onError})
-    //     ├── dir: (${typeof configs.dir})
+    // ├── env: ${configs.env}
+    // ├── production: ${configs.production}
+    // ├── project: ${configs.project_name}
+    // ├── cms: ${configs.project_cms}
+    // ├── plugins: ${configs.plugins.active.join(', ') || '(none)'}
+    // ├── static root: ${configs.static.root}
+    // └── cms root: ${configs.cms.root || '(disabled)'}
 
 + Tasks for gulpfile.js
     ├── html (gulp html)
     ├── css (gulp css)
     ├── js (gulp js)
+    ├── plugins (gulp plugins)
     ├── image (gulp image)
     ├── clean (gulp clean)
     ├── sync (gulp sync)
-    ├── copy (gulp copy)
     ├─┬ dev (gulp dev)
     │ └─┬ <parallel>
     │   ├── watch_files
@@ -34,10 +35,9 @@ exports.default_task = async function default_task() {
     │   ├── clean
     │   └─┬ <parallel>
     │     ├── build_html
-    │     ├── build_css
-    │     ├── build_js
+    │     ├── build_vite
     │     ├── build_image
-    │     └── copy_assets
+    │     └── sync_assets
     └── default (gulp)
 ----------------------------------------------------`
     );

@@ -17,14 +17,19 @@ const log = require('fancy-log');
 const dir_src = configs.source_dir;
 const dir_public = configs.dist_dir;
 const dir_assets = '/' + configs.assets_dir + '/';
+const static_css = `${dir_public}/${configs.static.css}`;
+const static_js = `${dir_public}/${configs.static.js}`;
 
 const delete_dir = {
     all: [dir_public + '/**/*', '!.git', '!.svn'],
     html: dir_public + '/**/*.html',
-    plugins: dir_public + dir_assets,
-    css: dir_public + dir_assets + 'css/**/*',
-    js: dir_public + dir_assets + 'js',
-    image: dir_public + dir_assets + 'images/**/*',
+    plugins: `${static_css}/${configs.files.css.plugins}`,
+    plugin_assets: `${static_css}/images`,
+    css: `${static_css}/${configs.files.css.app}`,
+    css_map: `${static_css}/${configs.files.css.app}.map`,
+    js: `${static_js}/${configs.files.js.app}`,
+    js_map: `${static_js}/${configs.files.js.app}.map`,
+    image: `${dir_public}/${configs.static.images}/**/*`,
 }
 
 /* function del all folder empty */
@@ -70,50 +75,59 @@ module.exports = {
         });
     },
 
-    clean_html: (async () => {
+    clean_html: async function () {
         /* clean all files .html */
         await Promise.resolve(del).then((obj) => {
             obj.deleteSync(delete_dir.html);
         });
         /* clean folder empty */
         cleanEmptyFoldersRecursively(dir_public);
-    }),
+    },
 
-    clean_plugins: (async () => {
+    clean_plugins: async function () {
         /* clean all files inside folder plugins */
         await Promise.resolve(del).then((obj) => {
-            obj.deleteSync(delete_dir.plugins + 'css/plugins.css');
-            obj.deleteSync(delete_dir.plugins + 'js/plugins.js');
+            obj.deleteSync(delete_dir.plugins);
+            obj.deleteSync(delete_dir.plugin_assets);
         });
         /* clean folder empty */
         cleanEmptyFoldersRecursively(dir_public);
-    }),
+    },
 
-    clean_css: (async () => {
+    clean_css: async function () {
         await Promise.resolve(del).then((obj) => {
             obj.deleteSync(delete_dir.css);
+            obj.deleteSync(delete_dir.css_map);
         });
         /* clean folder empty */
         cleanEmptyFoldersRecursively(dir_public);
-    }),
+    },
 
-    clean_js: (async () => {
+    clean_js: async function () {
         await Promise.resolve(del).then((obj) => {
-            obj.deleteSync(delete_dir.js + '/bundle.js');
-            obj.deleteSync(delete_dir.js + '/bundle.js.map');
-            obj.deleteSync(delete_dir.js + '/bundle.min.js');
-            obj.deleteSync(delete_dir.js + '/bundle.min.js.map');
+            obj.deleteSync(delete_dir.js);
+            obj.deleteSync(delete_dir.js_map);
         });
         /* clean folder empty */
         cleanEmptyFoldersRecursively(dir_public);
-    }),
+    },
 
-    clean_image: (async () => {
+    clean_vite: async function () {
+        await Promise.resolve(del).then((obj) => {
+            obj.deleteSync(delete_dir.css);
+            obj.deleteSync(delete_dir.css_map);
+            obj.deleteSync(delete_dir.js);
+            obj.deleteSync(delete_dir.js_map);
+        });
+        cleanEmptyFoldersRecursively(dir_public);
+    },
+
+    clean_image: async function () {
         await Promise.resolve(del).then((obj) => {
             obj.deleteSync(delete_dir.image);
         });
         /* clean folder empty */
         cleanEmptyFoldersRecursively(dir_public);
-    }),
+    },
 
 };

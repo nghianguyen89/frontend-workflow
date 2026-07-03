@@ -1,3 +1,12 @@
 allowBuilds:
-  '@parcel/watcher': false
-  sharp: false
+  '@parcel/watcher': true
+  esbuild: true
+  sharp: true
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - sharp
+
+overrides:
+  strip-ansi: 6.0.1

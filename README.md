@@ -1,76 +1,112 @@
-# Frontend Workflow với Gulp v5
+# Frontend Workflow với Gulp + Vite
 
-## 1. Cài đặt PNPM và Gulp
+Workflow này dùng để code giao diện thuần, preview static HTML/CSS/JS/images trong `dist/`, sau đó sync các file cần thiết sang cấu trúc CMS đang chọn như WordPress, EC-CUBE, Lancelot...
 
-Khuyến khích sử dụng `pnpm` thay cho `npm` để tăng tốc độ và tiết kiệm dung lượng.
+## 1. Cài đặt
 
-Cài đặt toàn cục:
+```sh
+pnpm install
+```
+
+Nếu chưa có CLI toàn cục:
+
 ```sh
 npm install -g pnpm gulp-cli
 ```
 
-Nếu gặp lỗi không nhận diện được `gulp`, hãy chạy lại lệnh trên để cài đặt `gulp-cli`.
+## 2. Chạy dev
 
----
-
-## 2. Cài đặt project
-
-Chạy lệnh sau để cài đặt các package cần thiết:
-```sh
-pnpm install
-```
-Chỉ cần chạy khi mới clone hoặc khi có cập nhật trong `package.json`.
-
----
-
-## 3. Chạy project
-
-Khởi động server dev:
 ```sh
 pnpm start
 ```
-- Source sẽ được build từ `./src/` sang `./build/`.
-- Server chạy tại [http://localhost:4200/](http://localhost:4200/).
-- Môi trường: `dev`.
 
-Nếu chỉ cần chạy server (không build lại source):
+Lệnh này build trước source vào `dist/`, sau đó chạy watcher + BrowserSync tại:
+
+```txt
+http://localhost:4200/
+```
+
+Nếu chỉ muốn chạy watcher/server sau khi đã build:
+
 ```sh
 pnpm dev
 ```
 
----
+## 3. Build production
 
-## 4. Build cho môi trường production
-
-Build và tối ưu code:
 ```sh
 pnpm build
 ```
-- Minify CSS/JS, tối ưu hình ảnh.
-- Môi trường: `prod`.
 
----
+Pipeline hiện tại:
 
-## Lưu ý
+- Gulp render `src/views/**/*.pug` thành HTML trong `dist/`.
+- Vite build và minify `src/styles/styles.scss` thành `dist/assets/css/styles.min.css`.
+- Vite bundle JS legacy/vendor/custom thành `dist/assets/js/bundle.min.js`.
+- Gulp concat và minify plugin CSS từ npm/legacy theo cấu hình thành `dist/assets/css/plugins.min.css`.
+- Gulp copy images, fonts vào `dist/assets/`.
+- Gulp sync CSS/JS sang target CMS theo cấu hình.
 
-- Dữ liệu trong `./src/assets/` (trừ `images/`) sẽ được copy sang `./build/html/assets/` mà không tối ưu.
-- Không chỉnh sửa hoặc commit code trong thư mục `./build/`.
-- Khi dùng cho Wordpress, sử dụng file CSS: `/build/html/assets/css/wordpress-style.min.css`.
+## 4. Cấu hình CMS target
 
----
+Chỉnh trong:
 
-## Cấu trúc thư mục
-
+```txt
+gulp-task/_configs_.js
 ```
-.vscode/           # Cấu hình VSCode cho project
-build/html/        # Code đã build từ src/
-gulp-task/         # Các task module của gulp
+
+Các giá trị chính:
+
+```js
+const project_name = getArg('project', process.env.PROJECT_NAME || 'wp_themes');
+const project_cms = getArg('cms', process.env.CMS || 'wordpress');
+```
+
+Có thể truyền qua command:
+
+```sh
+gulp build --prod --cms=wordpress --project=wp_themes
+```
+
+Mỗi CMS target khai báo `root`, thư mục `css/js/images/fonts`, và mapping file cần copy. Mặc định CMS sync chỉ copy CSS/JS để tránh xóa nhầm asset sẵn có trong source CMS. Nếu dự án thật sự cần mirror images/fonts, bật rõ trong target:
+
+```js
+sync: {
+    images: true,
+    fonts: true,
+}
+```
+
+## 5. Cấu hình plugin
+
+Plugin được khai báo tại `plugins.registry` trong:
+
+```txt
+gulp-task/_configs_.js
+```
+
+Mặc định `plugins.active` bật toàn bộ plugin tương đương bộ legacy hiện có. Với project mới, có thể sửa trực tiếp danh sách này hoặc truyền qua command/env:
+
+```sh
+gulp build --prod --plugins=jquery,bootstrap,swiper,fancyapps
+```
+
+Các plugin có package npm đã được chuyển sang npm dependency và bundle bằng Vite. Chỉ còn `floating-totop-button` và `jquery-zip2` nằm trong `src/assets/plugins/` vì chưa có package npm tương ứng rõ ràng.
+
+## 6. Minify khi compile
+
+Các task compile CSS/JS qua Vite (`gulp css`, `gulp js`, watcher) luôn xuất file `.min.css`/`.min.js` đã minify, kể cả khi chạy `--dev`. `pnpm build` vẫn dùng pipeline production đầy đủ để clean/render/copy/sync toàn bộ asset.
+
+## 7. Cấu trúc chính
+
+```txt
 src/
-  assets/
-    images/        # Ảnh sẽ được tối ưu khi build production
-    plugins/       # Các plugin sử dụng
-  scripts/         # JS files
-  styles/          # SCSS files
-  views/           # Pug files
-gulpfile.js        # Cấu hình gulp
+  views/          Pug templates
+  styles/         SCSS source
+  scripts/        JS custom
+  assets/         images, fonts, vendor plugins
+  _cms_/          source CMS dùng để compare/upload
+dist/             static build output
+gulp-task/        Gulp pipeline
+vite.config.mjs   Vite CSS/JS build
 ```
