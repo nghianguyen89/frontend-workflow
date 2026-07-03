@@ -36,17 +36,67 @@ mixin linkto(options)
 
 //- image tag
 mixin img(options)
-    -img_path = relativeRoot + 'assets/images/' + options.name
-    -alt_txt=''
-    if options.src 
-        -img_path = options.src
-    if options.alt 
-        -alt_txt = options.alt
+    -
+        let base_path = relativeRoot + 'assets/images/'
+
+        let img_a = options.name || ''
+        let img_b = options.nameBig || ''
+        let img_c = options.nameSMP || ''
+
+        let img_path_a = base_path + img_a
+        let img_path_b = base_path + img_b
+        let img_path_c = base_path + img_c
+
+        let alt_txt = options.alt || ''
+
+        if (options.src) {
+            img_path_a = options.src
+        }
 
     if options.type == 'bg'
-        div(loading="lazy" id=options.id class=options.class style='background-image:url("' + img_path + '");')
+        div(
+            loading="lazy"
+            id=options.id
+            class=options.class
+            style='background-image:url("' + img_path_a + '");' 
+        )
+
     else
-        img(loading="lazy" id=options.id class=options.class src=img_path alt=alt_txt width=options.width height=options.height usemap=options.usemap)
+        if img_a && (img_b || img_c)
+            picture
+                if img_b
+                    source(
+                        media="(min-width: 1921px)"
+                        srcset=img_path_b
+                    )
+
+                if img_c
+                    source(
+                        media="(max-width: 768px)"
+                        srcset=img_path_c
+                    )
+
+                img(
+                    loading="lazy"
+                    id=options.id
+                    class=options.class
+                    src=img_path_a
+                    alt=alt_txt
+                    width=options.width
+                    height=options.height
+                    usemap=options.usemap
+                )
+        else
+            img(
+                loading="lazy"
+                id=options.id
+                class=options.class
+                src=img_path_a
+                alt=alt_txt
+                width=options.width
+                height=options.height
+                usemap=options.usemap
+            )
 
 
 //- form element
@@ -266,7 +316,9 @@ mixin form_item(options)
             span.wpcf7-form-control.wpcf7-acceptance
                 span.wpcf7-list-item
                     input(type="checkbox" name="" value="1" aria-invalid="false")
-            span._text!= options.value
+            span._text
+                a(href=options.link target="_blank")= options.link_text
+                | #{options.text}
 
         default
             =options.before

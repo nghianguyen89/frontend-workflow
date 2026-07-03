@@ -38,6 +38,7 @@ li {
     list-style: none;
 }
 
+picture,
 img {
     display: block;
     margin: 0 auto;
@@ -46,6 +47,10 @@ img {
     max-width: 100%;
     height: auto;
     object-fit: cover;
+}
+
+picture img {
+    width: 100% !important;
 }
 
 a {

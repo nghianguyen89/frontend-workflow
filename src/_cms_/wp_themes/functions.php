@@ -58,13 +58,13 @@ function twentytwenty_theme_support() {
      *
      * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
      */
-    add_theme_support('post-thumbnails');
+    // add_theme_support('post-thumbnails');
 
     // Set post thumbnail size.
-    set_post_thumbnail_size(1200, 9999);
+    // set_post_thumbnail_size(1200, 9999);
 
     // Add custom image size used in Cover Template.
-    add_image_size('twentytwenty-fullscreen', 1980, 9999);
+    // add_image_size('twentytwenty-fullscreen', 1980, 9999);
 
     // Custom logo.
     $logo_width  = 120;
@@ -1277,3 +1277,32 @@ function save_meta_pinpost($post_id, $post, $update) {
     add_action('save_post', 'save_meta_pinpost');
 }
 //add_action( 'save_post', 'save_meta_pinpost', 99, 3 );
+
+/**
+ * Disable large default image sizes completely
+ */
+
+add_filter('intermediate_image_sizes', function($sizes) {
+    return array_diff($sizes, [
+        'medium_large',
+        '1536x1536',
+        '2048x2048'
+    ]);
+});
+
+add_filter('intermediate_image_sizes_advanced', function($sizes) {
+    unset($sizes['medium_large']);
+    unset($sizes['1536x1536']);
+    unset($sizes['2048x2048']);
+    return $sizes;
+});
+add_filter('big_image_size_threshold', '__return_false');
+
+add_filter('wp_generate_attachment_metadata', function ($metadata, $attachment_id) {
+    $file = get_attached_file($attachment_id);
+    $scaled = preg_replace('/\.(jpg|jpeg|png|webp)$/i', '-scaled.$1', $file);
+    if (file_exists($scaled)) {
+        unlink($scaled);
+    }
+    return $metadata;
+}, 10, 2);

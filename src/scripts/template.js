@@ -69,7 +69,7 @@ jQuery(document).ready(function () {
 
     // fancybox
     if (typeof Fancybox !== 'undefined' && typeof Fancybox.bind === 'function') {
-        Fancybox.bind("[data-fancybox]", {
+        Fancybox.bind('[data-fancybox]', {
             // Your custom options
         });
     }
