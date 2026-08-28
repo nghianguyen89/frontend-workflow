@@ -74,6 +74,14 @@ jQuery(document).ready(function () {
         });
     }
 
+    // hamburger
+    const hamburger = $('.hamburger');
+    hamburger.click(function(e){
+        e.preventDefault();
+        $(this).toggleClass('is-active');
+    });
+
+
     // main visual
     setTimeout(function () {
         const main_visual = jQuery('.main_visualbox__banner');

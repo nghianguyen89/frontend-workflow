@@ -159,18 +159,18 @@
 
 /* hover text with line */
 @mixin hv_line {
-    transition: background-size 0.3s ease;
-    background-image: linear-gradient(90deg, #93001f, #93001f);
+    transition: background-size var(--line-speed, 0.3s) ease;
+    background-image: linear-gradient(90deg, var(--line-color, #9C8968), var(--line-color, #9C8968));
     background-position: right bottom;
-    background-size: 0 1px;
+    background-size: 0 var(--line-thickness, 1px);
     background-repeat: no-repeat;
 
     &:hover {
         @include responsive-only(
             (
                 background-position: left bottom,
-                background-size: 100% 1px,
-                color: #93001f,
+                background-size: 100% var(--line-thickness, 1px),
+                color: var(--line-color, #9C8968),
                 text-decoration: none,
             ),
             pc

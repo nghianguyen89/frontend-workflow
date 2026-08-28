@@ -32,11 +32,21 @@ Nếu chỉ muốn chạy watcher/server sau khi đã build:
 pnpm dev
 ```
 
-## 3. Build production
+Trong dev, sửa SCSS chỉ compile `styles.min.css`; BrowserSync inject CSS nên không reload trang. Sửa JavaScript vẫn bundle lại bằng Vite và reload trang như bình thường. Watcher dev không sync file sang CMS.
+
+## 3. Build và sync CMS
 
 ```sh
 pnpm build
 ```
+
+Lệnh này build production đầy đủ rồi sync CSS/JS sang CMS. Nếu `dist/` đã có bản build muốn đưa sang CMS, chỉ cần:
+
+```sh
+pnpm sync:cms
+```
+
+## 4. Chi tiết build production
 
 Pipeline hiện tại:
 
@@ -47,7 +57,7 @@ Pipeline hiện tại:
 - Gulp copy images, fonts vào `dist/assets/`.
 - Gulp sync CSS/JS sang target CMS theo cấu hình.
 
-## 4. Cấu hình CMS target
+## 5. Cấu hình CMS target
 
 Chỉnh trong:
 
@@ -77,7 +87,7 @@ sync: {
 }
 ```
 
-## 5. Cấu hình plugin
+## 6. Cấu hình plugin
 
 Plugin được khai báo tại `plugins.registry` trong:
 
@@ -93,11 +103,11 @@ gulp build --prod --plugins=jquery,bootstrap,swiper,fancyapps
 
 Các plugin có package npm đã được chuyển sang npm dependency và bundle bằng Vite. Chỉ còn `floating-totop-button` và `jquery-zip2` nằm trong `src/assets/plugins/` vì chưa có package npm tương ứng rõ ràng.
 
-## 6. Minify khi compile
+## 7. Minify khi compile
 
-Các task compile CSS/JS qua Vite (`gulp css`, `gulp js`, watcher) luôn xuất file `.min.css`/`.min.js` đã minify, kể cả khi chạy `--dev`. `pnpm build` vẫn dùng pipeline production đầy đủ để clean/render/copy/sync toàn bộ asset.
+Vite bundle JavaScript thành `.min.js`; task SCSS dùng Sass + PostCSS để tạo `styles.min.css`. Cả hai đều minify ở dev. `pnpm build` vẫn dùng pipeline production đầy đủ để clean/render/copy/sync toàn bộ asset.
 
-## 7. Cấu trúc chính
+## 8. Cấu trúc chính
 
 ```txt
 src/

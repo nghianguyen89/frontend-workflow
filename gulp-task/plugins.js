@@ -75,6 +75,7 @@ function getActivePluginAssets() {
 
 function copyPluginAssets() {
     getActivePluginAssets().forEach(({ from, to }) => {
+        fs.mkdirSync(path.dirname(to), { recursive: true });
         fs.cpSync(from, to, { recursive: true });
         log(`Plugin asset copied: ${path.relative(configs.paths.root, to)}`);
     });

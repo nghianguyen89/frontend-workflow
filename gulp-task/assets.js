@@ -50,6 +50,36 @@ function copyMappedFiles(sourceDir, destDir, files) {
     });
 }
 
+function copyPluginCssAssets(sourceDir, destDir) {
+    const registry = configs.plugins && configs.plugins.registry ? configs.plugins.registry : {};
+    const active = configs.plugins && configs.plugins.active ? configs.plugins.active : [];
+    const copied = new Set();
+
+    active.forEach((name) => {
+        const plugin = registry[name];
+
+        if (!plugin || !plugin.assets) return;
+
+        plugin.assets.forEach((item) => {
+            const relativePath = item.to;
+            const source = path.resolve(sourceDir, relativePath);
+            const dest = path.resolve(destDir, relativePath);
+
+            if (copied.has(dest)) return;
+            copied.add(dest);
+
+            if (!fs.existsSync(source)) {
+                log(`Skip CMS plugin asset sync, missing file: ${source}`);
+                return;
+            }
+
+            ensureDir(path.dirname(dest));
+            fs.cpSync(source, dest, { recursive: true });
+            log(`Synced CMS plugin asset: ${path.relative(process.cwd(), dest)}`);
+        });
+    });
+}
+
 async function syncDirectory(source, dest, label) {
     if (!source || !dest || !fs.existsSync(source)) return;
 
@@ -110,10 +140,9 @@ module.exports = {
             cms.files && cms.files.css
         );
 
-        await syncDirectory(
-            path.resolve(staticCssDir, 'images') + path.sep,
-            cms.css ? path.resolve(cmsRoot, cms.css, 'images') + path.sep : '',
-            'CMS plugin CSS assets'
+        copyPluginCssAssets(
+            staticCssDir,
+            path.resolve(cmsRoot, cms.css)
         );
 
         copyMappedFiles(
