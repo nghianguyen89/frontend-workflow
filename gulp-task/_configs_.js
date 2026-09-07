@@ -174,15 +174,6 @@ const plugin_registry = {
             { type: 'npm-global', path: 'chartjs-plugin-datalabels', importName: 'ChartDataLabels', expose: ['ChartDataLabels'], after: 'Chart.register(ChartDataLabels);' },
         ],
     },
-    chosen: {
-        depends: ['jquery'],
-        styles: [{ type: 'npm', path: 'chosen-js/chosen.min.css' }],
-        scripts: [{ type: 'npm', path: 'chosen-js/chosen.jquery.js' }],
-        assets: [
-            { type: 'npm', from: 'chosen-js/chosen-sprite.png', to: 'chosen-sprite.png' },
-            { type: 'npm', from: 'chosen-js/chosen-sprite@2x.png', to: 'chosen-sprite@2x.png' },
-        ],
-    },
     datatables: {
         depends: ['jquery'],
         styles: [{ type: 'npm', path: 'datatables.net-dt/css/dataTables.dataTables.min.css' }],
@@ -243,6 +234,10 @@ const plugin_registry = {
     swiper: {
         styles: [{ type: 'npm', path: 'swiper/swiper-bundle.min.css' }],
         scripts: [{ type: 'npm-global', path: 'swiper/bundle', importName: 'Swiper', expose: ['Swiper'] }],
+    },
+    'tom-select': {
+        styles: [{ type: 'npm', path: 'tom-select/dist/css/tom-select.default.css' }],
+        scripts: [{ type: 'npm-global', path: 'tom-select', importName: 'TomSelect', expose: ['TomSelect'] }],
     },
     wanakana: {
         scripts: [{ type: 'npm-global', path: 'wanakana', importName: 'wanakana', expose: ['wanakana'], namespaceImport: true }],

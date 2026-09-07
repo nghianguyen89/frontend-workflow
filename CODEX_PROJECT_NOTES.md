@@ -1,6 +1,6 @@
 # Codex Project Notes
 
-Last updated: 2026-07-03
+Last updated: 2026-08-28
 
 This file records the working context for this repository so another Codex session can quickly continue from the same state.
 
@@ -62,6 +62,7 @@ When disabling a plugin, check whether custom scripts still use its globals. Exa
 - `Chart`
 - `ChartDataLabels`
 - `PerfectScrollbar`
+- `TomSelect`
 - `wanakana`
 - jQuery plugins under `jQuery.fn.*`
 
@@ -87,10 +88,13 @@ These plugins were moved to npm dependencies:
 - `odometer`
 - `perfect-scrollbar`
 - `swiper`
+- `tom-select`
 - `wanakana`
 - `wowjs`
 
 Versions were pinned close to the previous legacy assets where possible to avoid accidental API drift.
+
+Note: `chosen-js` was briefly added as a Chosen replacement candidate, then removed because Chosen is outdated. The current select replacement plugin is `tom-select@2.6.2`.
 
 ## CSS Plugin Assets
 
