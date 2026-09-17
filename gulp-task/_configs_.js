@@ -171,7 +171,13 @@ const plugin_registry = {
     chartjs: {
         scripts: [
             { type: 'npm-global', path: 'chart.js/auto', importName: 'Chart', expose: ['Chart'] },
-            { type: 'npm-global', path: 'chartjs-plugin-datalabels', importName: 'ChartDataLabels', expose: ['ChartDataLabels'], after: 'Chart.register(ChartDataLabels);' },
+            {
+                type: 'npm-global',
+                path: 'chartjs-plugin-datalabels',
+                importName: 'ChartDataLabels',
+                expose: ['ChartDataLabels'],
+                after: 'Chart.register(ChartDataLabels);',
+            },
         ],
     },
     datatables: {
@@ -184,8 +190,26 @@ const plugin_registry = {
             { type: 'npm', path: '@fancyapps/ui/dist/fancybox/fancybox.css' },
             { type: 'npm', path: '@fancyapps/ui/dist/carousel/carousel.css' },
             { type: 'npm', path: '@fancyapps/ui/dist/carousel/carousel.autoplay.css' },
+            { type: 'npm', path: '@fancyapps/ui/dist/carousel/carousel.arrows.css' },
+            { type: 'npm', path: '@fancyapps/ui/dist/carousel/carousel.dots.css' },
         ],
-        scripts: [{ type: 'npm-global', path: '@fancyapps/ui', importName: 'fancyapps', exposeNamespace: true }],
+        scripts: [
+            { type: 'npm-global', path: '@fancyapps/ui', importName: 'fancyapps', exposeNamespace: true },
+            {
+                type: 'npm-global',
+                path: '@fancyapps/ui/dist/carousel/carousel.dots.js',
+                importName: 'fancyappsDots',
+                namespaceImport: true,
+                after: 'window.Dots = fancyappsDots.Dots;',
+            },
+            {
+                type: 'npm-global',
+                path: '@fancyapps/ui/dist/carousel/carousel.autoscroll.js',
+                importName: 'fancyappsAutoscroll',
+                namespaceImport: true,
+                after: 'window.Autoscroll = fancyappsAutoscroll.Autoscroll;',
+            },
+        ],
     },
     'floating-totop-button': {
         depends: ['jquery'],
@@ -229,7 +253,14 @@ const plugin_registry = {
     },
     'perfect-scrollbar': {
         styles: [{ type: 'npm', path: 'perfect-scrollbar/css/perfect-scrollbar.css' }],
-        scripts: [{ type: 'npm-global', path: 'perfect-scrollbar', importName: 'PerfectScrollbar', expose: ['PerfectScrollbar'] }],
+        scripts: [
+            {
+                type: 'npm-global',
+                path: 'perfect-scrollbar',
+                importName: 'PerfectScrollbar',
+                expose: ['PerfectScrollbar'],
+            },
+        ],
     },
     swiper: {
         styles: [{ type: 'npm', path: 'swiper/swiper-bundle.min.css' }],
@@ -240,7 +271,15 @@ const plugin_registry = {
         scripts: [{ type: 'npm-global', path: 'tom-select', importName: 'TomSelect', expose: ['TomSelect'] }],
     },
     wanakana: {
-        scripts: [{ type: 'npm-global', path: 'wanakana', importName: 'wanakana', expose: ['wanakana'], namespaceImport: true }],
+        scripts: [
+            {
+                type: 'npm-global',
+                path: 'wanakana',
+                importName: 'wanakana',
+                expose: ['wanakana'],
+                namespaceImport: true,
+            },
+        ],
     },
 };
 
