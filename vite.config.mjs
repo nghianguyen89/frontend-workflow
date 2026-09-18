@@ -153,54 +153,68 @@ function legacyBundlePlugin() {
                 .filter((entry) => entry.type === 'npm' || entry.type === 'npm-global')
                 .map((entry, index) => renderNpmScriptImport(entry, index, 'main'))
                 .join('\n');
-            const legacyPluginScripts = pluginEntries
-                .filter((entry) => entry.type === 'legacy')
+            const legacyPluginEntries = pluginEntries.filter((entry) => entry.type === 'legacy');
+            const legacyPluginScripts = legacyPluginEntries
                 .map(renderLegacyScript)
                 .join(';\n');
-            const appScripts = resolveAppScriptFiles().map(renderAppScript).join(';\n');
+            const appScriptFiles = resolveAppScriptFiles();
+            const appScripts = appScriptFiles.map(renderAppScript).join(';\n');
+
+            [
+                ...legacyPluginEntries.map(resolveLegacyPluginFile),
+                ...appScriptFiles,
+                path.join(rootDir, configs.source_dir, 'scripts', 'detect'),
+                path.join(rootDir, configs.source_dir, 'scripts', 'functions'),
+                path.join(rootDir, configs.source_dir, 'scripts', 'pages'),
+            ].forEach((file) => this.addWatchFile(file));
 
             return `import "${virtualPluginPreludeId}";\nimport "${styleFile}";\n${npmImports}\nfunction __legacyRequire__() { return undefined; }\n${legacyPluginScripts}\n${appScripts}`;
         },
     };
 }
 
-export default defineConfig(() => ({
-    root: rootDir,
-    publicDir: false,
-    plugins: [legacyBundlePlugin()],
-    css: {
-        devSourcemap: true,
-        preprocessorOptions: {
-            scss: {
-                quietDeps: true,
-                loadPaths: [path.resolve(rootDir, configs.source_dir, 'styles')],
-            },
-        },
-    },
-    build: {
-        outDir: configs.dist_dir,
-        emptyOutDir: false,
-        sourcemap: true,
-        minify: 'esbuild',
-        cssMinify: true,
-        cssCodeSplit: false,
-        target: 'es2015',
-        rolldownOptions: {
-            input: {
-                bundle: virtualEntryId,
-            },
-            output: {
-                format: 'iife',
-                entryFileNames: `${configs.static.js}/${configs.files.js.app}`,
-                chunkFileNames: `${configs.static.js}/[name].min.js`,
-                assetFileNames(assetInfo) {
-                    if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-                        return `${configs.static.css}/${configs.files.css.app}`;
-                    }
+export default defineConfig(({ mode }) => {
+    const isProduction = mode === 'production';
 
-                    return `${configs.assets_dir}/[name][extname]`;
+    return {
+        root: rootDir,
+        publicDir: false,
+        plugins: [legacyBundlePlugin()],
+        css: {
+            devSourcemap: !isProduction,
+            preprocessorOptions: {
+                scss: {
+                    quietDeps: true,
+                    loadPaths: [path.resolve(rootDir, configs.source_dir, 'styles')],
                 },
             },
         },
-    },
-}));
+        build: {
+            outDir: configs.dist_dir,
+            emptyOutDir: false,
+            sourcemap: isProduction,
+            minify: isProduction ? 'esbuild' : false,
+            cssMinify: isProduction,
+            reportCompressedSize: isProduction,
+            cssCodeSplit: false,
+            target: 'es2015',
+            rolldownOptions: {
+                input: {
+                    bundle: virtualEntryId,
+                },
+                output: {
+                    format: 'iife',
+                    entryFileNames: `${configs.static.js}/${configs.files.js.app}`,
+                    chunkFileNames: `${configs.static.js}/[name].min.js`,
+                    assetFileNames(assetInfo) {
+                        if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+                            return `${configs.static.css}/${configs.files.css.app}`;
+                        }
+
+                        return `${configs.assets_dir}/[name][extname]`;
+                    },
+                },
+            },
+        },
+    };
+});

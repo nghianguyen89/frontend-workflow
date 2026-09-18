@@ -10,7 +10,7 @@ const { default_task } = require('./gulp-task/default');
 const { build_html } = require('./gulp-task/html');
 const { build_plugins } = require('./gulp-task/plugins');
 const { build_css } = require('./gulp-task/css');
-const { build_vite } = require('./gulp-task/vite');
+const { build_vite, watch_vite } = require('./gulp-task/vite');
 const { build_image } = require('./gulp-task/image');
 const { wf } = require('./gulp-task/watch');
 const assets = require('./gulp-task/assets');
@@ -31,7 +31,7 @@ exports.clean_js = del.clean_js;
 exports.clean_image = del.clean_image;
 
 exports.watch = wf;
-exports.dev = parallel(wf, browserSync.start);
+exports.dev = parallel(wf, browserSync.start, watch_vite);
 
 exports.sync = parallel(
     assets.sync_fonts,

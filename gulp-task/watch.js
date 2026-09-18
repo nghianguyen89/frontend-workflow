@@ -13,13 +13,10 @@ const { watch } = require('gulp');
 
 /* Task configs */
 const dir_src = configs.source_dir;
-const dir_public = configs.dist_dir;
 const dir_assets = '/' + configs.assets_dir + '/';
 
 const assets_src = dir_src + dir_assets;
 const { build_html } = require('./html');
-const { build_css } = require('./css');
-const { build_vite } = require('./vite');
 const { build_plugins } = require('./plugins');
 const assets = require('./assets');
 const { series } = require('gulp');
@@ -27,15 +24,6 @@ const { series } = require('gulp');
 exports.wf = function watch_files() {
     // Watch Pug files
     watch([dir_src + '/views/**/*.pug'], build_html);
-
-    // Watch SCSS files
-    watch([dir_src + '/styles/**/*.scss'], build_css);
-
-    // Watch JS files
-    watch([
-        dir_src + '/scripts/**/*.js',
-        assets_src + 'plugins/**/*.js',
-    ], build_vite);
 
     // Watch plugin CSS files
     watch([assets_src + 'plugins/**/*.css'], build_plugins);

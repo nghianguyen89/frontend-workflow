@@ -6,6 +6,7 @@
 'use strict';
 
 const path = require('path');
+const { spawn } = require('node:child_process');
 const log = require('fancy-log');
 const configs = require('./_configs_');
 
@@ -20,4 +21,14 @@ exports.build_vite = async function build_vite() {
     });
 
     log('░░░░░░░░░░ ✔ Vite CSS/JS build done ░░░░░░░░░░');
+};
+
+exports.watch_vite = function watch_vite() {
+    const viteCli = path.resolve('node_modules', 'vite', 'bin', 'vite.js');
+
+    log('░░░░░░░░░░⌛ Start Vite incremental watcher... ░░░░░░░░░░');
+
+    return spawn(process.execPath, [viteCli, 'build', '--watch', '--mode', 'development'], {
+        stdio: 'inherit',
+    });
 };
