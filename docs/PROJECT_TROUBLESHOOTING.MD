@@ -152,6 +152,16 @@ Run commands from the repository root. After dependencies are installed, use the
 
 Confirm the current working directory and package manifest before changing task configuration. Diagnose package-manager invocation failures separately from build-pipeline failures.
 
+### Heightline locks in incorrect heights when images or fonts load late
+
+**Problem:** Equal-height items overflow or retain stale heights on slow connections, after content changes, or when hidden containers become visible.
+
+**Root cause:** `src/scripts/detect/heightline.js` measured after a fixed delay and subsequently refreshed primarily on window resize. `_heightline` initialized another plugin instance on each `inview` event, accumulating listeners. Its row path also removed generated group classes before the table-cell lookup. The old height calculation omitted borders and truncated fractional padding.
+
+**Fix:** Replace the old implementation with a single jQuery plugin in `src/scripts/detect/smart_height.js`: `$(items).smart_height(options | 'refresh' | 'destroy')`. Container mode, `$(containers).smart_height({ itemSelector: '.card' })`, discovers later children and keeps each container's group independent. Coalesce measurements with `requestAnimationFrame`; refresh on captured resource load/error, font readiness/completion, DOM mutations and observed element/descendant size changes. Clear managed heights before measuring and handle both box-sizing modes. Restore original inline styles on destroy or inactive breakpoints; replace repeated instances. The old `heightLine()`/`_heightline()` APIs are removed.
+
+**Prevention:** A delay cannot guarantee resource readiness, and window load does not cover later lazy images or inserted content. Ignore observer notifications caused by the equalizer's own writes. Use disjoint selectors for independent instances. `itemPerRow` groups visible items in DOM order, not by geometric row position. Prefer CSS grid/flex stretch when the layout permits it. Run `node tests/smart-height.browser.cjs` with Node 22+ and Edge (or set `HEIGHTLINE_BROWSER` and `HEIGHTLINE_TEST_FONT` to a Chromium executable and a TTF fixture).
+
 ## Troubleshooting-Driven Technical Decisions
 
 ### Development uses persistent incremental watchers

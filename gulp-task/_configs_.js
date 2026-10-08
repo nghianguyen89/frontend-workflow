@@ -90,7 +90,7 @@ const cms_targets = {
         fonts: 'assets/fonts',
         sync: {
             images: false,
-            fonts: false,
+            fonts: true,
         },
         files: {
             css: [
@@ -211,6 +211,16 @@ const plugin_registry = {
             },
         ],
     },
+    datatables: {
+        styles: [
+            { type: 'npm', path: 'datatables.net-dt/css/dataTables.dataTables.min.css' },
+            { type: 'npm', path: 'datatables.net-fixedcolumns-dt/css/fixedColumns.dataTables.min.css' },
+        ],
+        scripts: [
+            { type: 'npm-global', path: 'datatables.net-dt', importName: 'DataTable', expose: ['DataTable'] },
+            { type: 'npm', path: 'datatables.net-fixedcolumns-dt' },
+        ],
+    },
     'floating-totop-button': {
         depends: ['jquery'],
         styles: [{ type: 'legacy', path: 'floating-totop-button/floating-totop-button-tiny.min.css' }],
@@ -321,7 +331,7 @@ module.exports = {
     browser_sync: {
         port: 4200,
         browsers: ['firefox'],
-        use_https: false,
+        use_https: true,
         ssl_cert: {
             key: 'C:/xampp/apache/conf/ssl.key/localhost.key',
             cert: 'C:/xampp/apache/conf/ssl.pem/localhost.pem',

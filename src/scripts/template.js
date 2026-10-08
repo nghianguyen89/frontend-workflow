@@ -94,6 +94,8 @@ jQuery(document).ready(function () {
             }
         }
     }, 500);
+
+    $('#wrapper').smart_height({ itemSelector: '.hl' });
 });
 
 (function(window, undefined) {
