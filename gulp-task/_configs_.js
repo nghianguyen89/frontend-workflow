@@ -180,11 +180,6 @@ const plugin_registry = {
             },
         ],
     },
-    datatables: {
-        depends: ['jquery'],
-        styles: [{ type: 'npm', path: 'datatables.net-dt/css/dataTables.dataTables.min.css' }],
-        scripts: [{ type: 'npm', path: 'datatables.net-dt' }],
-    },
     fancyapps: {
         styles: [
             { type: 'npm', path: '@fancyapps/ui/dist/fancybox/fancybox.css' },
@@ -212,6 +207,7 @@ const plugin_registry = {
         ],
     },
     datatables: {
+        depends: ['jquery'],
         styles: [
             { type: 'npm', path: 'datatables.net-dt/css/dataTables.dataTables.min.css' },
             { type: 'npm', path: 'datatables.net-fixedcolumns-dt/css/fixedColumns.dataTables.min.css' },
@@ -333,8 +329,8 @@ module.exports = {
         browsers: ['firefox'],
         use_https: true,
         ssl_cert: {
-            key: 'C:/xampp/apache/conf/ssl.key/localhost.key',
-            cert: 'C:/xampp/apache/conf/ssl.pem/localhost.pem',
+            key: 'C:/xampp/apache/conf/dev-companion/localhost.key',
+            cert: 'C:/xampp/apache/conf/dev-companion/localhost.pem',
         },
     },
 };

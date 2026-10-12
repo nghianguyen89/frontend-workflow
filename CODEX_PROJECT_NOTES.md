@@ -1,6 +1,6 @@
 # Codex Project Notes
 
-Last updated: 2026-08-28
+Last updated: 2026-10-08
 
 This file records the working context for this repository so another Codex session can quickly continue from the same state.
 
@@ -118,18 +118,17 @@ dist/assets/css/images/
 src/_cms_/wp_themes/assets/css/images/
 ```
 
-## Minify Behavior
+## Development Build and Preview
 
-CSS/JS compile now minifies even in dev task mode.
+Vite owns application SCSS/JS in both development and production. Development runs one persistent Vite build watcher through the API in the Gulp process, preserving CLI options. A development-only source-list file under `.cache/` invalidates the virtual entry when scripts are added or removed; Gulp watches Pug and static assets separately. Both `gulp watch --dev` and `gulp dev --dev` include Vite; only dev starts BrowserSync. The explicit CSS task also uses Vite, so it updates both app CSS and JS instead of overwriting the app CSS with a different Sass pipeline.
 
-In `vite.config.mjs`:
+Development app CSS/JS is unminified and has source maps. Vite 8.2.2 omits extracted CSS maps for this IIFE build, so `legacy-css-source-map` attaches a map from Vite's own CSS preprocessor during development. Production retains minification and JS maps. Plugin CSS is built and minified separately by Gulp.
 
-```js
-minify: 'esbuild',
-cssMinify: true,
-```
+BrowserSync injects CSS and compares generated JS contents before reloading. A rewritten but unchanged JS bundle, a source-map write, or a generated HTML write does not trigger a full reload. Pug owns its reload after the output stream completes. HTTPS and certificate paths are configurable in `browser_sync`.
 
-This means tasks like `gulp css --dev` and watcher-triggered Vite builds still output `.min.css` and `.min.js`.
+Run `pnpm test:workflow` for reload, anchor, source-map and live watcher regression checks. Watch tests copy sources into a temporary fixture.
+
+See [docs/PROJECT_TROUBLESHOOTING.MD](docs/PROJECT_TROUBLESHOOTING.MD) before debugging build/watch behavior.
 
 ## Static HTML Loading
 

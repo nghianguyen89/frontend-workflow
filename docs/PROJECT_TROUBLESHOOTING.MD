@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document is reusable technical memory for projects that share this Gulp/Vite frontend workflow. It contains only verified build, watch, preview, and artifact-delivery lessons that can be applied across equivalent frontend repositories.
+This document is reusable technical memory for projects that share this Gulp/Vite frontend workflow. It contains verified build, watch, preview, artifact-delivery and frontend-library lessons that can be applied across equivalent repositories.
 
 Before applying an entry in another repository, confirm that its current task graph, paths, and package versions still match the described behavior.
 
@@ -19,7 +19,7 @@ Before applying an entry in another repository, confirm that its current task gr
 
 - **Generated output is often mistaken for the source of a bug.** Inspect the expected file under `dist/` before changing a destination path or copy mapping.
 - **Watch latency can be queued work rather than a slow current build.** Gulp queues another execution when a file changes while the previous task is still running.
-- **Development and production have different performance requirements.** Minification, source maps, and compressed-size reporting should be enabled deliberately instead of being inherited blindly by every watch rebuild.
+- **Development and production have different performance requirements.** Keep minification and compressed-size reporting conditional on production; retain development source maps for debugging.
 - **Browser reload timing matters.** Reload only after the task responsible for an output has completed writing it.
 
 ## Troubleshooting History
@@ -85,7 +85,7 @@ Keep one HTML reload path. BrowserSync may watch completed CSS, JavaScript, and 
 
 **Root cause**
 
-Gulp invokes fresh `vite.build()` operations after every change instead of keeping incremental Vite build watchers alive. Saves made while a full build is running can leave another Gulp execution queued. Development rebuilds may also perform production-only work such as minification, source-map generation, or compressed-size calculation.
+Gulp invokes fresh `vite.build()` operations after every change instead of keeping incremental Vite build watchers alive. Saves made while a full build is running can leave another Gulp execution queued. Development rebuilds may also perform production-only work such as minification or compressed-size calculation. Source maps remain useful in development and should stay enabled.
 
 **Resolution**
 
@@ -115,7 +115,7 @@ The Vite plugin reads source files with `fs.readFileSync()` and returns their co
 
 **Resolution**
 
-Inside the plugin hook that reads the files, register every dependent file with `this.addWatchFile()`. Register a containing directory when additions or removals must also cause the virtual entry to be regenerated.
+Inside the plugin hook that reads the files, register every dependent file with `this.addWatchFile()`. For additions/removals, maintain a development-only script-list file under `.cache/` and register it from the virtual entry load hook. A recursive native directory watcher updates this list only when the discovered file set changes; Vite remains the sole build owner. Close that discovery watcher in `closeWatcher()`.
 
 **Relevant areas**
 
@@ -125,7 +125,7 @@ Inside the plugin hook that reads the files, register every dependent file with 
 
 **Prevention / Notes**
 
-Whenever a Vite plugin reads a file manually, treat watch registration as part of the same implementation. Verify changes, additions, and removals separately when source discovery is directory-based.
+Whenever a Vite plugin reads a file manually, treat watch registration as part of the same implementation. Verified on Windows with Vite 8.2.2/Rolldown 1.2.7: registering a directory alone did not trigger a rebuild for a new script. Test edits, additions, nested additions and removals separately with `pnpm test:workflow`.
 
 ### pnpm or Gulp failure is caused by command context
 
@@ -162,6 +162,86 @@ Confirm the current working directory and package manifest before changing task 
 
 **Prevention:** A delay cannot guarantee resource readiness, and window load does not cover later lazy images or inserted content. Ignore observer notifications caused by the equalizer's own writes. Use disjoint selectors for independent instances. `itemPerRow` groups visible items in DOM order, not by geometric row position. Prefer CSS grid/flex stretch when the layout permits it. Run `node tests/smart-height.browser.cjs` with Node 22+ and Edge (or set `HEIGHTLINE_BROWSER` and `HEIGHTLINE_TEST_FONT` to a Chromium executable and a TTF fixture).
 
+### Development CSS has no SCSS source map
+
+**Problem:** Dev IIFE builds have no `styles.min.css.map`, even when JavaScript maps exist.
+
+**Root cause:** `build.sourcemap` was production-only. Enabling it fixes JS maps, but Vite 8.2.2 does not emit maps for this workflow's extracted CSS with `cssCodeSplit: false`.
+
+**Fix:** Keep `build.sourcemap: true`. The development-only `legacy-css-source-map` plugin uses Vite's own `preprocessCSS()` map, verifies the preprocessed CSS matches the output, normalizes sources relative to the map, and attaches the map to `styles.min.css`.
+
+**Prevention:** Verify CSS and JS maps separately. Keep the plugin aligned with configured output names and revalidate it when upgrading Vite; do not silently emit a map for CSS that does not match.
+
+### An SCSS edit triggers a full BrowserSync reload
+
+**Problem:** SCSS builds successfully but the page reloads, losing local page state.
+
+**Root cause:** Vite watch rewrites JS even when its contents are unchanged. A broad `dist/**` watcher also treats source-map writes as reload-worthy changes.
+
+**Fix:** Watch CSS through BrowserSync's native injection path. Snapshot JS hashes before watching, wait for writes to settle, and reload only for changed JS contents or actual JS additions/removals. Leave HTML reload to the completed Pug task; do not watch map files for reloads.
+
+**Prevention:** Test CSS-only and JS edits separately. Do not restore a broad generated-output reload glob or unconditional JS reload.
+
+### Standalone CSS and watch commands diverge from the normal dev pipeline
+
+**Problem:** `gulp watch` misses JS/SCSS changes, or `gulp css` replaces Vite-generated CSS with output from another compiler path.
+
+**Root cause:** The watch task starts only Gulp's Pug/static watchers. A spawned Vite CLI does not inherit Gulp CLI flags such as `--plugins`. A separate Sass/PostCSS task can overwrite the app CSS independently of Vite's configuration and dependency graph.
+
+**Fix:** Include `watch_vite` in both `watch` and `dev`; start the persistent watcher with Vite's API in the same process to preserve configuration. Route `build_css` through `build_vite`; explicit CSS builds also rebuild JS.
+
+**Prevention:** Give application CSS/JS one build owner and check standalone commands as well as `pnpm start`.
+
+### Fragment-only links navigate to the root on nested pages
+
+**Problem:** A `scrollTo` link with `href="#section"` on a nested route goes to `/#section`.
+
+**Root cause:** Resolving the link with `window.location.origin` assigns the root path, making the same-page check fail.
+
+**Fix:** Resolve it with `new URL(href, window.location.href)` before comparing paths.
+
+**Prevention:** Test fragment-only and relative links on nested routes.
+
+### Fancyapps Carousel Autoscroll speed is ignored
+
+**Problem:** Carousels with different top-level `speed` values move at the same speed.
+
+**Root cause:** In Fancyapps UI 6, speed belongs to the `Autoscroll` plugin, which reads `options.Autoscroll` and otherwise defaults to `3`.
+
+**Fix:** Register `{ Autoscroll }` and pass `Autoscroll: { speed: value }` as the Carousel option. The template registry already exposes `window.Autoscroll`.
+
+**Prevention:** Keep plugin options under the matching case-sensitive plugin key. Higher Autoscroll speed values move faster; there is no site-specific carousel implementation to copy into this template.
+
+### DataTables configuration and installed dependencies drift apart
+
+**Problem:** Default builds fail to find FixedColumns CSS, or frozen installs reject the manifest.
+
+**Root cause:** The manifest declares DataTables 3.0.4 and FixedColumns 6.0.0, but the lockfile still has DataTables 3.0.3 and no FixedColumns. A duplicate registry key also hides the original `depends: ['jquery']`.
+
+**Fix:** Keep one DataTables registry entry with its jQuery dependency and synchronize the lockfile with the declared package versions; reinstall with the frozen lockfile.
+
+**Prevention:** Commit manifest, plugin registry and lockfile changes together. Verify a frozen install and default build before assuming a missing plugin file is a Vite bug.
+
+### CMS font mirroring deletes destination-only assets
+
+**Problem:** A production validation build removes tracked font files present only in the CMS destination.
+
+**Root cause:** The WordPress target has `sync.fonts: true`. `gulp-file-sync` mirrors `dist` fonts and deletes destination files absent from that source; CSS/JS copying and font mirroring have different semantics.
+
+**Fix:** Restore unintended validation deletions from the previously clean tracked files. Use font mirroring only with a complete source set; configure `sync.fonts: false` when CMS fonts must remain independent.
+
+**Prevention:** Inspect target sync flags before building. Validate build/sync in a source copy when the CMS destination contains independent assets, and review the worktree for asset deletions afterwards.
+
+### Git push fails over SSH while another personal repository uses HTTPS
+
+**Problem:** One GitHub repository cannot push and reports `Host key verification failed`, while another repository using the same personal account pushes successfully.
+
+**Root cause:** The failing remote uses SSH; the working remote uses HTTPS with Git Credential Manager. SSH host verification fails before repository authentication. Git `user.name`/`user.email` identify commit authors and do not select the authentication mechanism.
+
+**Fix:** Verify the same repository over HTTPS, including `git push --dry-run`, then use `git remote set-url origin https://github.com/OWNER/REPO.git` to match the working transport. If a separate push URL exists, update it too.
+
+**Prevention:** Compare both fetch/push URLs and credential transports before changing account permissions. Verify push access with dry-run; do not bypass SSH host verification to hide a transport configuration problem.
+
 ## Troubleshooting-Driven Technical Decisions
 
 ### Development uses persistent incremental watchers
@@ -174,7 +254,7 @@ Confirm the current working directory and package manifest before changing task 
 
 ### Production-only optimization stays conditional
 
-**Reason:** Minification, source maps, and compressed-size reporting add work that is not always useful during local iteration.
+**Reason:** Minification and compressed-size reporting add work that is not useful during local iteration. Source maps help debugging and stay enabled in development.
 
 **Decision:** Enable expensive output optimization according to the explicit production flag.
 
@@ -184,7 +264,7 @@ Confirm the current working directory and package manifest before changing task 
 
 **Reason:** Source content loaded manually with filesystem APIs is invisible to ordinary import-graph discovery.
 
-**Decision:** Register each manually read source, or its containing directory when required, with `this.addWatchFile()`.
+**Decision:** Register each manually read source with `this.addWatchFile()`. For discovered script sets, also register the file-list used to invalidate the virtual entry on additions/removals; directory registration alone is insufficient in this workflow.
 
 **Implication:** A virtual module is not watch-safe until edits and file-list changes have been tested without restarting the process.
 
@@ -204,7 +284,7 @@ Confirm the current working directory and package manifest before changing task 
 4. Compare initial build time with incremental rebuild time.
 5. Inspect Gulp queueing and task completion behavior before assuming a memory leak.
 6. For virtual modules, list every filesystem read and confirm matching `addWatchFile()` registrations.
-7. Confirm development flags do not unintentionally enable production minification, source maps, or compressed-size reporting.
+7. Confirm development retains source maps without enabling production minification or compressed-size reporting.
 8. Inspect generated artifacts under `dist/` before debugging copy or destination mappings.
 9. Tie BrowserSync reloads to completed writes and avoid duplicate reload paths.
 10. Run both development and production builds after changing shared build configuration.

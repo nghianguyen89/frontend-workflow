@@ -1,6 +1,6 @@
 /* ===========================================================================
  * Task         : watch
- * Description  : Watching files (pug, scss, js, images)
+ * Description  : Watch Pug and static assets not handled by Vite
  * Note         : Using Gulp v5
  * Package      : npm install --save-dev gulp
  * ===========================================================================*/

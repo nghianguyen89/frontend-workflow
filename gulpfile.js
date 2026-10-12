@@ -30,7 +30,7 @@ exports.clean_css = del.clean_css;
 exports.clean_js = del.clean_js;
 exports.clean_image = del.clean_image;
 
-exports.watch = wf;
+exports.watch = parallel(wf, watch_vite);
 exports.dev = parallel(wf, browserSync.start, watch_vite);
 
 exports.sync = parallel(

@@ -15,7 +15,7 @@ function scrollToAnchor(hash) {
     const header = document.querySelector('#header');
     const headerHeight = header ? header.offsetHeight : 0;
 
-    const offset = 20;
+    const offset = 0;
     const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - offset;
 
     window.scrollTo({
@@ -29,7 +29,7 @@ function handleAnchorClick(e) {
     const href = link.getAttribute('href');
     if (!href || !href.includes('#')) return;
 
-    const url = new URL(href, window.location.origin);
+    const url = new URL(href, window.location.href);
     const targetPath = normalizePath(url.pathname);
     const currentPath = normalizePath(window.location.pathname);
     const hash = url.hash;
@@ -50,8 +50,13 @@ function handleAnchorClick(e) {
 
 function initAnchorScroll() {
     // click
-    document.querySelectorAll('a.scrollTo').forEach(function (link) {
+    document.querySelectorAll('a.scrollTo:not(.noScroll)').forEach(function (link) {
         link.addEventListener('click', handleAnchorClick);
+    });
+    document.querySelectorAll('a.noScroll[href*="#"]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+        });
     });
     // load page có hash
     if (window.location.hash) {

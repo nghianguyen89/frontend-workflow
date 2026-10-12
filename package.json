@@ -8,7 +8,8 @@
         "build": "gulp build --prod",
         "build:dev": "gulp build:dev --dev",
         "dev": "gulp dev --dev",
-        "sync:cms": "gulp sync-cms --prod"
+        "sync:cms": "gulp sync-cms --prod",
+        "test:workflow": "node --test tests/workflow.test.cjs tests/workflow-watch.test.cjs"
     },
     "author": "Nghia Nguyen",
     "license": "ISC",

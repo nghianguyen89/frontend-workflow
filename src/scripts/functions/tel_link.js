@@ -3,7 +3,7 @@
 (function ($) {
 
     if (
-        __is_smp ||
+        window.__is_smp ||
         MobileEsp.DetectIos() ||
         MobileEsp.DetectAndroid() ||
         MobileEsp.DetectSmartphone()

@@ -95,6 +95,7 @@ async function syncDirectory(source, dest, label) {
 module.exports = {
 
     sync_fonts: async function () {
+        if (!fs.existsSync(assets_src + 'fonts/')) return;
         try {
             await $.fileSync(
                 assets_src + 'fonts/',

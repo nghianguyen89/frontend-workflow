@@ -96,6 +96,30 @@ jQuery(document).ready(function () {
     }, 500);
 
     $('#wrapper').smart_height({ itemSelector: '.hl' });
+
+    // auto image background
+    const auto_background = $('.autoImgBg');
+    if (auto_background.length > 0) {
+        auto_background.each(function () {
+            let imgSrc = $(this).attr('src');
+            let imgCls = '';
+
+            if ($(this).hasClass('pc')) {
+                imgCls = ' pc';
+                if (!window.__is_smp) $(this).parent().find('.smp').remove();
+            }
+
+            if ($(this).hasClass('smp')) {
+                imgCls = ' smp';
+                if (window.__is_smp) $(this).parent().find('.pc').remove();
+            }
+
+            if ($(this).hasClass('smp')) imgCls = ' smp';
+            $(this).wrap(
+                '<div class="img_bg_wrapper' + imgCls + '" style="background-image:url(' + imgSrc + ')"></div>',
+            );
+        });
+    }
 });
 
 (function(window, undefined) {

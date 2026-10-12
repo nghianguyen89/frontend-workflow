@@ -24,7 +24,7 @@
 @function fluid($min, $max) {
     @return clamp(
         #{rem($min)},
-        #{math.div($max, 1920) * 100}vw,
+        #{math.div($max, 1500) * 100}vw,
         #{rem($max)}
     );
 }

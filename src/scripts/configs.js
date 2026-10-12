@@ -29,11 +29,9 @@ let __viewportW = jQuery(window).width();
 let __viewportH = jQuery(window).height();
 let __documentH = 0;
 let __viewportSMP = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cus-grid-breakpoints-smp'));
-let __is_smp = __viewportW <= __viewportSMP ? true : false;
-let __header = jQuery('#__header');
-let __footer = jQuery('#__footer');
-
-let __navbox = jQuery('.__header_menu');
+window.__is_smp = __viewportW <= __viewportSMP ? true : false;
+let __header = jQuery('#header');
+let __footer = jQuery('#footer');
 
 /* shorthand console.log */
 const log = console.log.bind(console);

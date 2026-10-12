@@ -29,6 +29,7 @@ exports.default_task = async function default_task() {
     ├─┬ dev (gulp dev)
     │ └─┬ <parallel>
     │   ├── watch_files
+    │   ├── watch_vite
     │   └── browsersync_start
     ├─┬ build (gulp build)
     │ └─┬ <series>

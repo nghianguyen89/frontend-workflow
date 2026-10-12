@@ -30,8 +30,11 @@ importers:
         specifier: 2.2.0
         version: 2.2.0(chart.js@4.5.1)
       datatables.net-dt:
-        specifier: 3.0.3
-        version: 3.0.3
+        specifier: 3.0.4
+        version: 3.0.4
+      datatables.net-fixedcolumns-dt:
+        specifier: 6.0.0
+        version: 6.0.0
       hamburgers:
         specifier: 1.2.1
         version: 1.2.1
@@ -1666,11 +1669,17 @@ packages:
     resolution: {integrity: sha512-0LrrStPOdJj+SPCCrGhzryycLjwcgUSHBtxNA8aIDxf0GLsRh1cKYhB00Gd1lDOS4yGH69+SNn13+TWbVHETFQ==}
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0, npm: '>=7.0.0'}
 
-  datatables.net-dt@3.0.3:
-    resolution: {integrity: sha512-7bXd2O0LIuab0O+4Fa6HkbpdakO2if1F95oo/+QQ8gDNkPUyo803iS5eksCHsMyayXOIG9E3B/hukgKbkLfH/w==}
+  datatables.net-dt@3.0.4:
+    resolution: {integrity: sha512-4ageAKiv2H+1iHvWuWGG3PiMxo+/k+iqeqUplwQLRming8o3R/PpA29lR0rO876jDDgOkY7/U87k7SAEt8WCMA==}
 
-  datatables.net@3.0.3:
-    resolution: {integrity: sha512-XyxlOVnqMMfh/X+xpoX/3I4ZZATubiGNenDhmG++C1pLMYVDMDfvOCO/W3/RMyVOx4bh3WocEh+G8Id7Sk8vsg==}
+  datatables.net-fixedcolumns-dt@6.0.0:
+    resolution: {integrity: sha512-WyAsYaQrnJc4ausgrwKe8m8DG7QzxJaE4SuVSLf+NXhu/PeUZkuBFcoyvME33rk7GCTBObmQ2f8KjBhINz8Ssg==}
+
+  datatables.net-fixedcolumns@6.0.0:
+    resolution: {integrity: sha512-MbmCYZyv0KtDlr+NoCbNpINDlaxVc6y64BFYGUnSVzLfVLFwPo3ZFbLwfFZu1rpCSPi0yS2OiGcwJd2zTPUxEw==}
+
+  datatables.net@3.0.4:
+    resolution: {integrity: sha512-jbT0Pc4Xq1i5kTYVhqg0vh11DsqWj3AkgVgdJLUqK7264Xi+QWLI4ekee8X50sRPKzJQxaXDHrxh5hnGO49BqQ==}
 
   debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -4860,11 +4869,20 @@ snapshots:
     dependencies:
       css-tree: 2.2.1
 
-  datatables.net-dt@3.0.3:
+  datatables.net-dt@3.0.4:
     dependencies:
-      datatables.net: 3.0.3
+      datatables.net: 3.0.4
 
-  datatables.net@3.0.3: {}
+  datatables.net-fixedcolumns-dt@6.0.0:
+    dependencies:
+      datatables.net-dt: 3.0.4
+      datatables.net-fixedcolumns: 6.0.0
+
+  datatables.net-fixedcolumns@6.0.0:
+    dependencies:
+      datatables.net: 3.0.4
+
+  datatables.net@3.0.4: {}
 
   debug@2.6.9(supports-color@7.2.0):
     dependencies:
